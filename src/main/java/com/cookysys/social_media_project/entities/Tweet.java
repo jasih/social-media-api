@@ -38,10 +38,19 @@ public class Tweet {
 	@JoinColumn
 	private Tweet inReplyTo;
 	
+	@OneToMany(mappedBy = "inReplyTo")
+	private List<Tweet> replies;
 	
 	@ManyToOne
 	@JoinColumn
 	private Tweet repostOf;
+	
+	@OneToMany(mappedBy = "repostOf")
+	private List<Tweet> reposts;
+	
+	@ManyToMany
+	@JoinTable
+	private List<User> likes;
 	
 	@ManyToMany
 	@JoinTable

@@ -4,7 +4,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @RestController
-@RequestMapping("/hashtag")
+@RequestMapping("/tags")
+@RequiredArgsConstructor
 public class HashtagController {
 
 }

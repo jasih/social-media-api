@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 public class SocialMediaControllerAdvice {
 
 //	@ExceptionHandler(BadRequestException.class)
+//	@ResponseStatus(HttpStatus.BAD_REQUEST)
 //	public ErrorDto handleBadRequestException(HttpServletRequest request, BadRequestException badRequestException) {
 //		return new ErrorDto(badRequestException.getMessage());
 //	}

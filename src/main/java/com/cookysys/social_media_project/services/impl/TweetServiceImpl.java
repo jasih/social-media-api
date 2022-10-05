@@ -1,5 +1,7 @@
 package com.cookysys.social_media_project.services.impl;
 
-public class TweetServiceImpl {
+@Service
+@RequiredArgsConstructor
+public class TweetServiceImpl implements TweetService {
 
 }

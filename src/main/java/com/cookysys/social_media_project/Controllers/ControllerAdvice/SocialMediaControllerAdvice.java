@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
 @ControllerAdvice(basePackages = { "com.cookysys.social_media_project.controllers" })
+@ResponseBody
 public class SocialMediaControllerAdvice {
 
 //	@ExceptionHandler(BadRequestException.class)

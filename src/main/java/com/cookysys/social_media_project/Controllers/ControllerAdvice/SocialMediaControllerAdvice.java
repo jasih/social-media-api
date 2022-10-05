@@ -1,4 +1,4 @@
-package com.cookysys.social_media_project.controllers.ControllerAdvice;
+package com.cookysys.social_media_project.Controllers.ControllerAdvice;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

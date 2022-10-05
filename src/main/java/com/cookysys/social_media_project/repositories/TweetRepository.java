@@ -1,5 +1,6 @@
 package com.cookysys.social_media_project.repositories;
 
-public interface TweetRepository {
+@Repository
+public interface TweetRepository extends JpaRepository<Tweet, Long>{
 
 }

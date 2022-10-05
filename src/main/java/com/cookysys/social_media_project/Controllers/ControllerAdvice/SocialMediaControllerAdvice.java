@@ -1,8 +1,9 @@
-package com.cookysys.social_media_project.controllers.ControllerAdvice;
+package com.cookysys.social_media_project.Controllers.ControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;

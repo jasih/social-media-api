@@ -1,9 +1,11 @@
 package com.cookysys.social_media_project.exceptions;
 
+import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter

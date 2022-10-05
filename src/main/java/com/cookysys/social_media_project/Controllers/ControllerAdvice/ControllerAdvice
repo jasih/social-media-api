@@ -1,6 +1,0 @@
- package com.cookysys.social_media_project.controllers.advice;
-
- @ControllerAdvice(basePackages = {"com.cookysys.social_media_project.controllers"})
- public class ControllerAdvice {
-
- }

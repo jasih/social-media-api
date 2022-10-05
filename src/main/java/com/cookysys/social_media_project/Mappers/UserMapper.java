@@ -1,4 +1,4 @@
-package com.cookysys.social_media_project.Mappers;
+package com.cookysys.social_media_project.mappers;
 
 import org.mapstruct.Mapper;
 

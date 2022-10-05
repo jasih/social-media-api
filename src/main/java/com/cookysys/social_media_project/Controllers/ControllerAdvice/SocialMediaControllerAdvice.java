@@ -1,4 +1,4 @@
-package com.cookysys.social_media_project.controllers.ControllerAdvice;
+package com.cookysys.social_media_project.Controllers.ControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.cookysys.social_media_project.dtos.ErrorDto;
 import com.cookysys.social_media_project.exceptions.BadRequestException;
 import com.cookysys.social_media_project.exceptions.NotFoundException;
+
+import org.springframework.http.HttpStatus;
 
 @ControllerAdvice(basePackages = { "com.cookysys.social_media_project.controllers" })
 @ResponseBody

@@ -8,7 +8,9 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ValidateServiceImpl implements ValidateService  {@Override
+public class ValidateServiceImpl implements ValidateService  {
+	
+	@Override
 	public boolean userNameExists(String username) {
 		// TODO Auto-generated method stub
 		return false;
@@ -16,6 +18,12 @@ public class ValidateServiceImpl implements ValidateService  {@Override
 
 	@Override
 	public boolean userNameAvailable(String username) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean labelExists(String label) {
 		// TODO Auto-generated method stub
 		return false;
 	}

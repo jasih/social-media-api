@@ -7,6 +7,8 @@ public interface ValidateService {
 	boolean userNameExists(String username);
 
 	boolean userNameAvailable(String username);
+
+	boolean labelExists(String label);
 	
 	
 

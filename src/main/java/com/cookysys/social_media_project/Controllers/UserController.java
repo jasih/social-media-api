@@ -69,6 +69,23 @@ public class UserController {
 		return userService.getFeed(username);
 	}
 	
-	
+	@GetMapping("/@{username}/following")
+	public List<UserResponseDto> getFollowing(@PathVariable String username) {
+		return userService.getFollowing(username);
+	}
 
+	@GetMapping("/@{username}/tweets")
+	public List<TweetResponseDto> getTweets(@PathVariable String tweets) {
+		return userService.getTweets(tweets);
+	}
+	
+	@GetMapping("/@{username}/followers")
+	public List<UserResponseDto> getFollowers(@PathVariable String username) {
+		return userService.getFollowers(username);
+	}
+	
+	@GetMapping("/@{username}/mentions")
+	public List<TweetResponseDto> getMentions(@PathVariable String tweets) {
+		return userService.getMentions(tweets);
+	}
 }

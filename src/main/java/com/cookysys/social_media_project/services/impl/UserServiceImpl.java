@@ -69,8 +69,27 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
-	
-	
-	
+	@Override
+	public List<UserResponseDto> getFollowing(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
+	@Override
+	public List<TweetResponseDto> getTweets(String tweets) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<UserResponseDto> getFollowers(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<TweetResponseDto> getMentions(String tweets) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

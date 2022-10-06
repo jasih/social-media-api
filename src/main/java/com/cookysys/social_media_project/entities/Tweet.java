@@ -27,7 +27,7 @@ public class Tweet {
 	
 	@Column(nullable=false, updatable=false)
 	@CreationTimestamp
-	private Timestamp joined;
+	private Timestamp posted;
 	
 	@Column(nullable=false)
 	private boolean deleted;

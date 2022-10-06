@@ -49,14 +49,14 @@ public class HashtagServiceImpl implements HashtagService {
 	@Override
 	public List<TweetResponseDto> getTweetsWithLabel(String label) {
 		
-		Optional<Hashtag> hashtag = hashtagRepository.findByLabel(label); 
-		
-		if (hashtag.isEmpty()) {
-			throw new NotFoundException("No hashtag was found with this label: " + label);
-		}
+//		Optional<Hashtag> hashtag = hashtagRepository.findByLabel(label); 
+//		
+//		if (hashtag.isEmpty()) {
+//			throw new NotFoundException("No hashtag was found with this label: " + label);
+//		}
 		
 		//TODO: need to implement reverse order + check for tweet content
-		return hashtagMapper.entityToDto(hashtag.get());	
-		
+//		return hashtagMapper.entityToDto(hashtag.get());	
+		return null;
 	}
 }

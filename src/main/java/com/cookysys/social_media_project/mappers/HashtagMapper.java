@@ -13,6 +13,6 @@ public interface HashtagMapper {
 
 	List<HashtagDto> entitiesToDtos(List<Hashtag> findAll);
 
-	List<TweetResponseDto> entityToDto(Hashtag hashtag);
+	//List<TweetResponseDto> entityToDto(Hashtag hashtag);
     
 }

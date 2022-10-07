@@ -5,6 +5,7 @@ import java.util.List;
 import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
 import com.cookysys.social_media_project.dtos.UserRequestDto;
+import com.cookysys.social_media_project.dtos.UserResponseDto;
 
 public interface TweetService {
 
@@ -27,5 +28,11 @@ public interface TweetService {
     TweetResponseDto getUsersWhoLikedATweet(Long id);
 
     TweetResponseDto getContextOfTweet(Long id);
+
+	List<TweetResponseDto> getRepliesToTweets(Long id, UserRequestDto user);
+
+	List<TweetResponseDto> getRepostsOfTweets(Long id, UserRequestDto user);
+
+	List<UserResponseDto> getMentions(Long id, UserRequestDto user);
 
 }

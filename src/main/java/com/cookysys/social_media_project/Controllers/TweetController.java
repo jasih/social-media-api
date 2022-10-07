@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
 import com.cookysys.social_media_project.dtos.UserRequestDto;
+import com.cookysys.social_media_project.dtos.UserResponseDto;
 import com.cookysys.social_media_project.services.TweetService;
 
 import lombok.RequiredArgsConstructor;
@@ -74,5 +75,20 @@ public class TweetController {
     public TweetResponseDto getContextOfTweet(@PathVariable("id") Long id) {
         return tweetService.getContextOfTweet(id);
     }
+    
+    @GetMapping("/{id}/replies")
+    public List<TweetResponseDto> getRepliesToTweets(@PathVariable Long id, @RequestBody UserRequestDto user) {
+    	return tweetService.getRepliesToTweets(id, user);
+    }
+    
+    @GetMapping("/{id}/reposts")
+    public List<TweetResponseDto> getRepostsOfTweets(@PathVariable Long id, @RequestBody UserRequestDto user) {
+    	return tweetService.getRepostsOfTweets(id, user);
+    }
 
+    @GetMapping("/{id}/mentions")
+    public List<UserResponseDto> getMentions(@PathVariable Long id, @RequestBody UserRequestDto user) {
+    	return tweetService.getMentions(id, user);
+    }
+    
 }

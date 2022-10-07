@@ -54,10 +54,10 @@ public class HashtagServiceImpl implements HashtagService {
 			if (!label.matches(hashtagWithLabel.getLabel())) {
 				throw new NotFoundException("No hashtag was found with this label: " + label);
 			}
-			return tweetMapper.entitiesToDto(tweets);
+			return tweetMapper.entitiesToResponseDtos(tweets);
 		}
 
-		return tweetMapper.entitiesToDto(tweets);
+		return tweetMapper.entitiesToResponseDtos(tweets);
 	}
 
 }

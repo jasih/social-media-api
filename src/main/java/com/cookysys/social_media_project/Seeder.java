@@ -15,7 +15,6 @@ import com.cookysys.social_media_project.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -24,11 +23,12 @@ public class Seeder implements CommandLineRunner {
 	
 	public final HashtagRepository hashtagRepository;
 	public final TweetRepository tweetRepository;
-	public final UserRepository userRepository;
+	private final UserRepository userRepository;
 	
 // --- User 1 ---
     // Credentials
 	public void run(String... args) throws Exception {
+		
     CredentialsEmbeddable user1Cred = new CredentialsEmbeddable();
     user1Cred.setUsername("therealmc");
     user1Cred.setPassword("Password");

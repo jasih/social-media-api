@@ -11,7 +11,7 @@ import com.cookysys.social_media_project.entities.Hashtag;
 @Repository
 public interface HashtagRepository extends JpaRepository<Hashtag, Long>{
 
-	List<Hashtag> findByLabelContainingIgnoreCase(String label);
+	Optional<Hashtag> findByLabelContainingIgnoreCase(String label);
 
-
+	List<Hashtag> findAllByLabelContainingIgnoreCase(String label);
 }

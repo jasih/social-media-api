@@ -39,7 +39,7 @@ public class ValidateServiceImpl implements ValidateService  {
 	//TODO: checks the string, but not special characters
 	@Override
 	public boolean labelExists(String label) {
-		List<Hashtag> hashtags = hashtagRepository.findByLabelContainingIgnoreCase(label);
+		List<Hashtag> hashtags = hashtagRepository.findAllByLabelContainingIgnoreCase(label);
 		for (Hashtag hashtag : hashtags) {
 			if (!hashtags.isEmpty()) {
 				return true;

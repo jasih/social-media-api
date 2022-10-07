@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 public class ValidateController {
 	
-	private ValidateService validateService;
+	private final ValidateService validateService;
 	
 	@GetMapping ("./username/exists/@{username}")
 	public boolean userNameExists(@PathVariable String username) {

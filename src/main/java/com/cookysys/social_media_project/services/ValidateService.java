@@ -1,7 +1,5 @@
 package com.cookysys.social_media_project.services;
 
-
-
 public interface ValidateService {
 
 	boolean userNameExists(String username);
@@ -9,7 +7,5 @@ public interface ValidateService {
 	boolean userNameAvailable(String username);
 
 	boolean labelExists(String label);
-	
-	
 
 }

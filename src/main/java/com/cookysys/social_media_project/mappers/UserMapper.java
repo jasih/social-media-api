@@ -1,5 +1,7 @@
 package com.cookysys.social_media_project.mappers;
 
+import java.util.List;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -10,6 +12,9 @@ import com.cookysys.social_media_project.entities.User;
 public interface UserMapper {
     
     @Mapping(target = "username", source = "credentials.username")
-    UserResponseDto entityToDto(User user);
+    UserResponseDto entityToResponseDto(User user);
+
+	List<UserResponseDto> entityToResponseDto(List<User> users);
+    
     
 }

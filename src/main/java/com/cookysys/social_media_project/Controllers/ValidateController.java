@@ -17,13 +17,13 @@ public class ValidateController {
 	
 	private final ValidateService validateService;
 	
-	@GetMapping ("./username/exists/@{username}")
+	@GetMapping ("/username/exists/@{username}")
 	public boolean userNameExists(@PathVariable String username) {
 		return validateService.userNameExists(username);
 	}
 	
 	
-	@GetMapping ("./username/available/@{username}")
+	@GetMapping ("/username/available/@{username}")
 	public boolean userNameAvailable(@PathVariable String username) {
 		return validateService.userNameAvailable(username);
 	}

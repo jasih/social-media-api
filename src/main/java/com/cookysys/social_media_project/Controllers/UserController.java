@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cookysys.social_media_project.services.UserService;
 import com.cookysys.social_media_project.dtos.CredentialsDto;
-import com.cookysys.social_media_project.dtos.TweetResponseDto;
+//import com.cookysys.social_media_project.dtos.TweetResponseDto;
 import com.cookysys.social_media_project.dtos.UserRequestDto;
 import com.cookysys.social_media_project.dtos.UserResponseDto;
 
@@ -30,6 +30,7 @@ public class UserController {
 	
 	private final UserService userService;
 	
+	//Get all users
 	@ResponseStatus(code = HttpStatus.OK)
 	@GetMapping
 	public List<UserResponseDto> getAllUsers(){
@@ -37,18 +38,21 @@ public class UserController {
 		return userService.getAllUsers();
 	}
 	
+	//Create new user
 	@ResponseStatus(code = HttpStatus.CREATED)
 	@PostMapping
 	public UserResponseDto createUser(@RequestBody UserRequestDto userRequestDto){
 		return userService.createUser(userRequestDto);
 	}
 	
+	//Get user by username
 	@ResponseStatus(code = HttpStatus.OK)
 	@GetMapping("/@{username}")
 	public UserResponseDto getUser(@PathVariable String username) {
-		return userService.getUser(username);
+		return userService.getSpecificUser(username);
 	}
 	
+	//Updating User
 	@ResponseStatus(code = HttpStatus.OK)
 	@PatchMapping("/@{username}")
 	public UserResponseDto updateUser(@PathVariable String username, @RequestBody UserRequestDto userRequestDto) {
@@ -61,24 +65,24 @@ public class UserController {
 		return userService.deleteUser(username, credentialsDto);
 	}
 	
-	@ResponseStatus(code = HttpStatus.OK)
-	@PostMapping("/@{username}/follow")
-	public void addFollower(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
-		userService.followUser(credentialsDto, username);
-	}
-	
-	@ResponseStatus(code = HttpStatus.OK)
-	@PostMapping("/@{username}/unfollow")
-	public void removeFollower(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
-		userService.unfollowUser(credentialsDto, username);
-	}
-	
-	@ResponseStatus(code = HttpStatus.OK)
-	@GetMapping("/@{username}/feed")
-	public List<TweetResponseDto> getFeed(@PathVariable String username){
-		return userService.getFeed(username);
-	}
-	
+//	@ResponseStatus(code = HttpStatus.OK)
+//	@PostMapping("/@{username}/follow")
+//	public void addFollower(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
+//		userService.followUser(credentialsDto, username);
+//	}
+//	
+//	@ResponseStatus(code = HttpStatus.OK)
+//	@PostMapping("/@{username}/unfollow")
+//	public void removeFollower(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
+//		userService.unfollowUser(credentialsDto, username);
+//	}
+//	
+//	@ResponseStatus(code = HttpStatus.OK)
+//	@GetMapping("/@{username}/feed")
+//	public List<TweetResponseDto> getFeed(@PathVariable String username){
+//		return userService.getFeed(username);
+//	}
+//	
 //	@GetMapping("/@{username}/following")
 //	public List<UserResponseDto> getFollowing(@PathVariable String username) {
 //		return userService.getFollowing(username);

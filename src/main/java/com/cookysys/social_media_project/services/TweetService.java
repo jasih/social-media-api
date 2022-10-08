@@ -29,10 +29,10 @@ public interface TweetService {
 
     TweetResponseDto getContextOfTweet(Long id);
 
-	List<TweetResponseDto> getRepliesToTweets(Long id, UserRequestDto user);
+	List<TweetResponseDto> getRepliesToTweets(Long id);
 
-	List<TweetResponseDto> getRepostsOfTweets(Long id, UserRequestDto user);
+	List<TweetResponseDto> getRepostsOfTweets(Long id);
 
-	List<UserResponseDto> getMentions(Long id, UserRequestDto user);
+	List<UserResponseDto> getMentions(Long id);
 
 }

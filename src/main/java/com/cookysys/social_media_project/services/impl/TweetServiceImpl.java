@@ -1,7 +1,7 @@
 package com.cookysys.social_media_project.services.impl;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
@@ -30,7 +30,7 @@ public class TweetServiceImpl implements TweetService {
 	
 	private final UserMapper userMapper;
 	private final UserRepository userRepository;
-
+	
 	@Override
 	public List<TweetResponseDto> getAllTweets() {
 		return tweetMapper.entitiesToDtos(tweetRepository.findAll(Sort.by(Sort.Direction.DESC)));
@@ -90,22 +90,25 @@ public class TweetServiceImpl implements TweetService {
 		return null;
 	}
 
-	//TODO: for the 3 below, need to exclude deleted items + check if it builds and runs
 	// Retrieves the direct replies to the tweet with the given id. If that tweet is
-	// deleted or otherwise doesn’t exist, an error should be sent in lieu of a
-	// response.
+	// deleted or otherwise doesn’t exist, an error should be sent in lieu of a response.
 	// Deleted replies to the tweet should be excluded from the response.
 	@Override
-	public List<TweetResponseDto> getRepliesToTweets(Long id, UserRequestDto user) {
-		Optional<Tweet> tweets = tweetRepository.findById(id);
-		List<Tweet> userReplies = tweets.get().getReplies();
-		for (Tweet reply : userReplies) {
-			if (tweets.isEmpty() && tweets.isPresent() == false) {
-				throw new NotFoundException("No tweet was found with this id: " + id +". Or this tweet has been deleted.");
-			}
-			return tweetMapper.entitiesToDto(userReplies);
+	public List<TweetResponseDto> getRepliesToTweets(Long id) {
+		Tweet tweet = tweetRepository.findByIdAndDeletedFalse(id);
+		if (tweet == null) {
+			throw new NotFoundException("No tweet was found with this id: " + id + ". Or this tweet has been deleted.");
 		}
-		return tweetMapper.entitiesToDto(userReplies);
+		
+		List<Tweet> userReplies = tweet.getReplies();
+		List<Tweet> newList = new ArrayList<>();
+		for (Tweet reply : userReplies) {
+			if (!reply.isDeleted()) {
+				newList.add(reply);
+			}
+		}
+	
+		return tweetMapper.entitiesToDtos(newList);
 	}
 
 	// Retrieves the direct reposts of the tweet with the given id. If that tweet is
@@ -113,33 +116,41 @@ public class TweetServiceImpl implements TweetService {
 	// response.
 	// Deleted reposts of the tweet should be excluded from the response.
 	@Override
-	public List<TweetResponseDto> getRepostsOfTweets(Long id, UserRequestDto user) {
-		Optional<Tweet> tweets = tweetRepository.findById(id);
-		List<Tweet> userReposts = tweets.get().getReposts();
-		for (Tweet repost : userReposts) {
-			if (tweets.isEmpty() && tweets.isPresent() == false) {
-				throw new NotFoundException("No tweet was found with this id: " + id +". Or this tweet has been deleted.");
-			}
-			return tweetMapper.entitiesToDto(userReposts);
+	public List<TweetResponseDto> getRepostsOfTweets(Long id) {
+		Tweet tweet = tweetRepository.findByIdAndDeletedFalse(id);
+		if (tweet == null) {
+			throw new NotFoundException("No tweet was found with this id: " + id + ". Or this tweet has been deleted.");
 		}
-		return tweetMapper.entitiesToDto(userReposts);
+		
+		List<Tweet> userReposts = tweet.getReposts();
+		List<Tweet> newList = new ArrayList<>();
+		for (Tweet repost : userReposts) {
+			if (!repost.isDeleted()) {
+				newList.add(repost);
+			}
+		}
+	
+		return tweetMapper.entitiesToDtos(newList);
 	}
 
-	// Retrieves the users mentioned in the tweet with the given id. If that tweet
-	// is deleted or otherwise doesn’t exist, an error should be sent in lieu of a
-	// response.
+	// Retrieves the users mentioned in the tweet with the given id. 
+	// If that tweet is deleted or otherwise doesn’t exist, an error should be sent in lieu of a response.
 	// Deleted users should be excluded from the response.
 	// **IMPORTANT** Remember that tags and mentions must be parsed by the server!
 	@Override
-	public List<UserResponseDto> getMentions(Long id, UserRequestDto user) {
-		Optional<Tweet> tweets = tweetRepository.findById(id);
-		List<User> userMentions = tweets.get().getUserMentioned();
-		for (User mention : userMentions) {
-			if (tweets.isEmpty() && tweets.isPresent() == false) {
-				throw new NotFoundException("No tweet was found with this id: " + id +". Or this tweet has been deleted.");
-			}
-			return userMapper.entitiesToDto(userMentions);
+	public List<UserResponseDto> getMentions(Long id) {
+		Tweet tweet = tweetRepository.findByIdAndDeletedFalse(id);
+		if (tweet == null) {
+			throw new NotFoundException("No tweet was found with this id: " + id + ". Or this tweet has been deleted.");
 		}
-		return userMapper.entitiesToDto(userMentions);
+		
+		List<User> userList = new ArrayList<>();
+		for (User user : tweet.getUserMentioned()) {
+			if (!user.isDeleted()) {
+				userList.add(user);
+			}
+		}
+		
+		return userMapper.entityToResponseDto(userList);
 	}
 }

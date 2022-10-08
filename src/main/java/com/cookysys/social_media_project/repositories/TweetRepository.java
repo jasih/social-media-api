@@ -8,4 +8,5 @@ import com.cookysys.social_media_project.entities.Tweet;
 @Repository
 public interface TweetRepository extends JpaRepository<Tweet, Long>{
 
+
 }

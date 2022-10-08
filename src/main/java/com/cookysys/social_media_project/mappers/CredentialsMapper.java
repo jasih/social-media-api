@@ -12,4 +12,6 @@ public interface CredentialsMapper {
 
     CredentialsDto entityToResponseDto(CredentialsEmbeddable credentials);
 
+    CredentialsEmbeddable requestDtoToEntity(CredentialsDto credentials);
+
 }

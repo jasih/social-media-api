@@ -2,19 +2,14 @@ package com.cookysys.social_media_project.Controllers;
 
 import java.util.List;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cookysys.social_media_project.dtos.HashtagDto;
-import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
-import com.cookysys.social_media_project.entities.Hashtag;
 import com.cookysys.social_media_project.services.HashtagService;
-import com.cookysys.social_media_project.services.TweetService;
 
 import lombok.RequiredArgsConstructor;
 

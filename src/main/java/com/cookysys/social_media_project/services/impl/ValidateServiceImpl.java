@@ -1,14 +1,24 @@
 package com.cookysys.social_media_project.services.impl;
 
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
-import com.cookysys.social_media_project.dtos.CredentialsDto;
+import com.cookysys.social_media_project.entities.Hashtag;
+import com.cookysys.social_media_project.entities.Tweet;
 import com.cookysys.social_media_project.entities.User;
+import com.cookysys.social_media_project.mappers.HashtagMapper;
+import com.cookysys.social_media_project.repositories.HashtagRepository;
+import com.cookysys.social_media_project.repositories.UserRepository;
+import com.cookysys.social_media_project.dtos.CredentialsDto;
 import com.cookysys.social_media_project.exceptions.BadRequestException;
 import com.cookysys.social_media_project.exceptions.NotAuthorizedException;
-import com.cookysys.social_media_project.repositories.UserRepository;
+import com.cookysys.social_media_project.exceptions.NotFoundException;
 import com.cookysys.social_media_project.services.ValidateService;
 
 import lombok.RequiredArgsConstructor;
@@ -17,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ValidateServiceImpl implements ValidateService  {
 	
+	private final HashtagRepository hashtagRepository;
 	private final UserRepository userRepository;
 	
 	@Override
@@ -43,6 +54,21 @@ public class ValidateServiceImpl implements ValidateService  {
         return true;
 	}
 	
+	
+	//TODO: checks the string, but not special characters
+	@Override
+	public boolean labelExists(String label) {
+		List<Hashtag> hashtags = hashtagRepository.findAllByLabelContainingIgnoreCase(label);
+		for (Hashtag hashtag : hashtags) {
+			if (!hashtags.isEmpty()) {
+				return true;
+			} else {
+				throw new NotFoundException("No label with this label found: " + label);
+			}
+		}
+		return false;
+	}
+
 	public User authenticate(CredentialsDto credentialsDto) throws NotAuthorizedException {
         final Optional<CredentialsDto> credentials = Optional.ofNullable(credentialsDto);
         final String username = credentials.map(CredentialsDto::getUsername).flatMap(Optional::ofNullable).orElse("");

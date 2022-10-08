@@ -4,7 +4,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cookysys.social_media_project.services.UserService;
 import com.cookysys.social_media_project.dtos.CredentialsDto;
-//import com.cookysys.social_media_project.dtos.TweetResponseDto;
+import com.cookysys.social_media_project.dtos.TweetResponseDto;
 import com.cookysys.social_media_project.dtos.UserRequestDto;
 import com.cookysys.social_media_project.dtos.UserResponseDto;
 
@@ -68,7 +68,7 @@ public class UserController {
 	@ResponseStatus(code = HttpStatus.OK)
 	@PostMapping("/@{username}/follow")
 	public void addFollower(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
-		userService.followUser(credentialsDto, username);
+		userService.followUser(username, credentialsDto);
 	}
 	
 	@ResponseStatus(code = HttpStatus.OK)

@@ -30,7 +30,6 @@ public class ValidateServiceImpl implements ValidateService  {
 	private final HashtagRepository hashtagRepository;
 	private final UserRepository userRepository;
 	
-	@Override
 	public boolean userNameExists(String username) {
 		Optional<User> optionalUser = userRepository.findByCredentialsUsernameAndDeletedFalse(username);
 		if (optionalUser.isPresent()) {

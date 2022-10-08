@@ -65,24 +65,24 @@ public class UserController {
 		return userService.deleteUser(username, credentialsDto);
 	}
 	
-//	@ResponseStatus(code = HttpStatus.OK)
-//	@PostMapping("/@{username}/follow")
-//	public void addFollower(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
-//		userService.followUser(credentialsDto, username);
-//	}
-//	
-//	@ResponseStatus(code = HttpStatus.OK)
-//	@PostMapping("/@{username}/unfollow")
-//	public void removeFollower(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
-//		userService.unfollowUser(credentialsDto, username);
-//	}
-//	
-//	@ResponseStatus(code = HttpStatus.OK)
-//	@GetMapping("/@{username}/feed")
-//	public List<TweetResponseDto> getFeed(@PathVariable String username){
-//		return userService.getFeed(username);
-//	}
-//	
+	@ResponseStatus(code = HttpStatus.OK)
+	@PostMapping("/@{username}/follow")
+	public void addFollower(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
+		userService.followUser(credentialsDto, username);
+	}
+	
+	@ResponseStatus(code = HttpStatus.OK)
+	@PostMapping("/@{username}/unfollow")
+	public void removeFollower(@RequestBody CredentialsDto credentialsDto, @PathVariable String username) {
+		userService.unfollowUser(credentialsDto, username);
+	}
+	
+	@ResponseStatus(code = HttpStatus.OK)
+	@GetMapping("/@{username}/feed")
+	public List<TweetResponseDto> getFeed(@PathVariable String username){
+		return userService.getFeed(username);
+	}
+	
 //	@GetMapping("/@{username}/following")
 //	public List<UserResponseDto> getFollowing(@PathVariable String username) {
 //		return userService.getFollowing(username);

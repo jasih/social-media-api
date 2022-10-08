@@ -51,21 +51,21 @@ public interface UserService {
 		Subscribes the user whose credentials are provided by the request body to the user whose username is given in the url
 	 */
 
-//	void followUser(CredentialsDto credentialsDto, String username);
-//	
-//	/*
-//	 * POST users/@{username}/unfollow
-//		Unsubscribes the user whose credentials are provided by the request body from the user whose username is given in the url.
-//	 */
-//
-//	void unfollowUser(CredentialsDto credentialsDto, String username);
-//	
-//	/*
-//	 * GET users/@{username}/feed
-//		Retrieves all (non-deleted) tweets authored by the user with the given username, as well as all (non-deleted) tweets authored by users the given user is following. 
-//	 */
-//
-//	List<TweetResponseDto> getFeed(String username);
+	public void followUser(String username, CredentialsDto credentialsDto);
+	
+	/*
+	 * POST users/@{username}/unfollow
+		Unsubscribes the user whose credentials are provided by the request body from the user whose username is given in the url.
+	 */
+
+	public void unfollowUser(CredentialsDto credentialsDto, String username);
+	
+	/*
+	 * GET users/@{username}/feed
+		Retrieves all (non-deleted) tweets authored by the user with the given username, as well as all (non-deleted) tweets authored by users the given user is following. 
+	 */
+
+	List<TweetResponseDto> getFeed(String username);
 //
 //	/*
 //	 * GET users/@{username}/following

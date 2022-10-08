@@ -5,11 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.cookysys.social_media_project.dtos.CredentialsDto;
-import com.cookysys.social_media_project.dtos.ProfileDto;
-//import com.cookysys.social_media_project.dtos.TweetResponseDto;
-import com.cookysys.social_media_project.dtos.UserRequestDto;
-import com.cookysys.social_media_project.dtos.UserResponseDto;
+import com.cookysys.social_media_project.dtos.*;
 import com.cookysys.social_media_project.embeddables.ProfileEmbeddable;
 import com.cookysys.social_media_project.entities.User;
 import com.cookysys.social_media_project.exceptions.BadRequestException;
@@ -36,14 +32,6 @@ public class UserServiceImpl implements UserService {
         }
 	}
 	
-//	private User getUser(String username) {
-//		Optional<User> optionalUser = userRepository.findByCredentialsUsername(username);
-//		if(optionalUser.isEmpty()) {
-//			throw new NotFoundException("No user found with this username" + username);
-//		}
-//		return optionalUser.get();
-//	}
-	
 	private User handleUserExists(User user) {
         if (user.isDeleted()) {
             user.setDeleted(false);
@@ -69,10 +57,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 	
+	/*
+	 * API Implementations
+	 */
+	
 	@Override
 	public List<UserResponseDto> getAllUsers() {
 		
-		return userMapper.entitiesToResponseDto(userRepository.findAll());
+		return userMapper.entitiesToResponseDto(userRepository.findAllByDeletedFalse());
 	}
 
 	@Override
@@ -83,8 +75,7 @@ public class UserServiceImpl implements UserService {
 
         User userToSave = userMapper.requestDtoToEntity(userRequestDto);
         Optional<User> optionalUser = userRepository.findByCredentialsUsername(username);
-        User user =
-                optionalUser.map(this::handleUserExists).orElseGet(() -> handleNotUserExists(userToSave));
+        User user = optionalUser.map(this::handleUserExists).orElseGet(() -> handleNotUserExists(userToSave));
 
         return userMapper.entityToResponseDto(user);
 	}
@@ -107,7 +98,8 @@ public class UserServiceImpl implements UserService {
                 "User doesn't exist"));
 
         if (userToUpdate.getCredentials().getPassword().equals(userRequestDto.getCredentials().getPassword()) && userToUpdate.getCredentials().getUsername().equals(userRequestDto.getCredentials().getUsername())) {
-
+        	
+        	//Update profile information
             ProfileDto profileDto = userRequestDto.getProfile();
             ProfileEmbeddable newProfile = new ProfileEmbeddable();
             newProfile.setFirstName(profileDto.getFirstName());
@@ -127,6 +119,8 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserResponseDto deleteUser(String username, CredentialsDto credentialsDto) {
+		
+		//The authenticate is called from validateService and implements a way to track those that are deleted by mapping
 		final User userToDelete = validateService.authenticate(credentialsDto);
 		
 		userToDelete.setDeleted(true);
@@ -135,24 +129,33 @@ public class UserServiceImpl implements UserService {
 	}
 	
 
-//	@Override
-//	public void followUser(CredentialsDto credentialsDto, String username) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public void unfollowUser(CredentialsDto credentialsDto, String username) {
-//		// TODO Auto-generated method stub
-//		
-//	}
-//
-//	@Override
-//	public List<TweetResponseDto> getFeed(String username) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
+	@Override
+	public void followUser(String followerUsername, CredentialsDto credentialsDto) {
+		
+		//Follower
+		final String user = validateService.authenticate(credentialsDto);
+		
+		final String follower = validateUsername(followerUsername, "User To Follow Not Found");
+		
+		if(!follower.getFollowers().contains(user)) {
+			follower.getFollowers().add(user);
+			userRepository.saveAllAndFlush(follower);
+		}
+		
+	}
+
+	@Override
+	public void unfollowUser(CredentialsDto credentialsDto, String username) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public List<TweetResponseDto> getFeed(String username) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 //	@Override
 //	public List<UserResponseDto> getFollowing(String username) {
 //		// TODO Auto-generated method stub

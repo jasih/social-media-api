@@ -9,8 +9,8 @@ import com.cookysys.social_media_project.dtos.UserRequestDto;
 import com.cookysys.social_media_project.dtos.UserResponseDto;
 import com.cookysys.social_media_project.entities.User;
 
-@Mapper(componentModel = "spring", uses = { ProfileMapper.class, CredentialsMapper.class })
 
+@Mapper(componentModel = "spring", uses = { ProfileMapper.class, CredentialsMapper.class })
 public interface UserMapper {
 	
 	User requestDtoToEntity(UserRequestDto userRequestDto);

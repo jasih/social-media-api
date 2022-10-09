@@ -28,7 +28,7 @@ public class HashtagServiceImpl implements HashtagService {
 
 	private final TweetMapper tweetMapper;
 	private final TweetRepository tweetRepository;
-	
+
 	private final ValidateServiceImpl validateServiceImpl;
 
 	private Hashtag getLabel(String label) {
@@ -60,9 +60,9 @@ public class HashtagServiceImpl implements HashtagService {
 				tweets.remove(tweet);
 			}
 		}
-		
+
 		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToDtos(tweets);
-		return tweetResponses;	
+		return tweetResponses;
 	}
 
 }

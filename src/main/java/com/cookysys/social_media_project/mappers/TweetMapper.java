@@ -4,21 +4,17 @@ import java.util.List;
 
 import org.mapstruct.Mapper;
 
-import com.cookysys.social_media_project.dtos.HashtagDto;
 import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
-import com.cookysys.social_media_project.entities.Hashtag;
-
 import com.cookysys.social_media_project.entities.Tweet;
 
 @Mapper(componentModel = "spring", uses = { UserMapper.class })
 public interface TweetMapper {
 
-Tweet requestDtoToEntity(TweetRequestDto tweetRequestDto);
+  Tweet requestDtoToEntity(TweetRequestDto tweetRequestDto);
 
-TweetResponseDto entityToResponseDto(Tweet tweet);
+  TweetResponseDto entityToResponseDto(Tweet tweet);
 
-List<TweetResponseDto> entitiesToResponseDtos(List<Tweet> tweets);
+  List<TweetResponseDto> entitiesToResponseDtos(List<Tweet> tweets);
 
-List<TweetResponseDto> entitiesToDtos(List<Tweet> findAll);
 }

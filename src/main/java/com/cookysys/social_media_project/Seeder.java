@@ -1,6 +1,5 @@
 package com.cookysys.social_media_project;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

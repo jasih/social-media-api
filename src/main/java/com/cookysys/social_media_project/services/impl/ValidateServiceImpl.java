@@ -1,24 +1,17 @@
 package com.cookysys.social_media_project.services.impl;
 
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
-import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.cookysys.social_media_project.entities.Hashtag;
-import com.cookysys.social_media_project.entities.Tweet;
 import com.cookysys.social_media_project.entities.User;
-import com.cookysys.social_media_project.mappers.HashtagMapper;
 import com.cookysys.social_media_project.repositories.HashtagRepository;
 import com.cookysys.social_media_project.repositories.UserRepository;
 import com.cookysys.social_media_project.dtos.CredentialsDto;
 import com.cookysys.social_media_project.exceptions.BadRequestException;
 import com.cookysys.social_media_project.exceptions.NotAuthorizedException;
-import com.cookysys.social_media_project.exceptions.NotFoundException;
 import com.cookysys.social_media_project.services.ValidateService;
 
 import lombok.RequiredArgsConstructor;

@@ -1,14 +1,17 @@
 package com.cookysys.social_media_project.services.impl;
 
+import static java.util.function.Predicate.not;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
 import com.cookysys.social_media_project.dtos.*;
 import com.cookysys.social_media_project.embeddables.ProfileEmbeddable;
-import com.cookysys.social_media_project.entities.Hashtag;
 import com.cookysys.social_media_project.entities.Tweet;
 import com.cookysys.social_media_project.entities.User;
 import com.cookysys.social_media_project.exceptions.BadRequestException;
@@ -16,7 +19,6 @@ import com.cookysys.social_media_project.exceptions.NotAuthorizedException;
 import com.cookysys.social_media_project.exceptions.NotFoundException;
 import com.cookysys.social_media_project.mappers.TweetMapper;
 import com.cookysys.social_media_project.mappers.UserMapper;
-import com.cookysys.social_media_project.repositories.TweetRepository;
 import com.cookysys.social_media_project.repositories.UserRepository;
 import com.cookysys.social_media_project.services.UserService;
 import com.cookysys.social_media_project.services.ValidateService;
@@ -32,7 +34,7 @@ public class UserServiceImpl implements UserService {
 	private final ValidateService validateService;
 	private final ValidateServiceImpl validateServiceImpl;
 	private final TweetMapper tweetMapper;
-	private final TweetRepository tweetRepository;
+	
 
 	private void validateUserRequest(UserRequestDto userRequestDto) {
 		if (userRequestDto.getCredentials() == null || userRequestDto.getCredentials().getUsername() == null
@@ -167,8 +169,13 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<TweetResponseDto> getFeed(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		final User user = validateUsername(username, "User not found");
+        final var userTweets = user.getTweets().stream().filter(not(Tweet::isDeleted));
+        final var followingTweets = user.getFollowing().stream().filter(not(User::isDeleted)).flatMap(u -> u.getTweets().stream().filter(not(Tweet::isDeleted)));
+        final var tweets = Stream.concat(userTweets, followingTweets)
+            .sorted((a, b) -> b.getPosted().compareTo(a.getPosted()))
+            .collect(Collectors.toList());
+        return tweetMapper.entitiesToResponseDtos(tweets);
 	}
 
 	// Retrieves all (non-deleted) tweets authored by the user with the given

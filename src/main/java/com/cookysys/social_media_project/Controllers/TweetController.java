@@ -15,7 +15,6 @@ import com.cookysys.social_media_project.dtos.CredentialsDto;
 import com.cookysys.social_media_project.dtos.HashtagDto;
 import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
-import com.cookysys.social_media_project.dtos.UserRequestDto;
 import com.cookysys.social_media_project.dtos.UserResponseDto;
 import com.cookysys.social_media_project.services.TweetService;
 

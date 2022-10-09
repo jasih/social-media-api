@@ -2,6 +2,9 @@ package com.cookysys.social_media_project.Controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cookysys.social_media_project.dtos.ContextDto;
+import com.cookysys.social_media_project.dtos.CredentialsDto;
+import com.cookysys.social_media_project.dtos.HashtagDto;
 import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
 import com.cookysys.social_media_project.dtos.UserRequestDto;
@@ -31,48 +34,48 @@ public class TweetController {
         return tweetService.getAllTweets();
     }
 
-    @PostMapping
-    public TweetResponseDto createTweet(@RequestBody TweetRequestDto tweetRequestDto) {
-        return tweetService.createTweet(tweetRequestDto);
-    }
-
     @GetMapping(value="/{id}")
     public TweetResponseDto getTweet(@PathVariable("id") Long id) {
         return tweetService.getTweet(id);
     }
 
+    @PostMapping
+    public TweetResponseDto createTweet(@RequestBody TweetRequestDto tweetRequestDto) {
+        return tweetService.createTweet(tweetRequestDto);
+    }
+
     @DeleteMapping(value="/{id}")
-    public TweetResponseDto deleteTweet(@PathVariable("id") Long id) {
-        return tweetService.deleteTweet(id);
+    public TweetResponseDto deleteTweet(@PathVariable("id") Long id, @RequestBody CredentialsDto credentialsDto) {
+        return tweetService.deleteTweet(id, credentialsDto);
     }
 
     @PostMapping(value="/{id}/like")
-    public TweetResponseDto likeTweet(@PathVariable("id") Long id, @RequestBody UserRequestDto user) {
-        return tweetService.likeTweet(id, user);
+    public TweetResponseDto likeTweet(@PathVariable("id") Long id, @RequestBody CredentialsDto credentialsDto) {
+        return tweetService.likeTweet(id, credentialsDto);
     }
 
     @PostMapping(value="/{id}/reply")
-    public TweetResponseDto replyToTweet(@PathVariable("id") Long id, @PathVariable("reply") String reply) {
-        return tweetService.replyToTweet(id, reply);
-    }
-
-    @GetMapping(value="/{id}/tags")
-    public TweetResponseDto getHashtagOfTweet(@PathVariable("id") Long id) {
-        return tweetService.getHashtagOfTweet(id);
+    public TweetResponseDto replyToTweet(@PathVariable("id") Long id, @RequestBody TweetRequestDto tweetRequestDto) {
+        return tweetService.replyToTweet(id, tweetRequestDto);
     }
 
     @PostMapping(value="/{id}/repost")
-    public TweetResponseDto repostTweet(@PathVariable("id") Long id, @RequestBody UserRequestDto user) {
-        return tweetService.repostTweet(id, user);
+    public TweetResponseDto repostTweet(@PathVariable("id") Long id, @RequestBody CredentialsDto credentialsDto) {
+        return tweetService.repostTweet(id, credentialsDto);
+    }
+
+    @GetMapping(value="/{id}/tags")
+    public List<HashtagDto> getHashtagsOfTweet(@PathVariable("id") Long id) {
+        return tweetService.getHashtagsOfTweet(id);
     }
 
     @GetMapping(value="/{id}/likes")
-    public TweetResponseDto getUsersWhoLikedATweet(@PathVariable("id") Long id) {
+    public List<UserResponseDto> getUsersWhoLikedATweet(@PathVariable("id") Long id) {
         return tweetService.getUsersWhoLikedATweet(id);
     }
 
-    @GetMapping(value="path")
-    public TweetResponseDto getContextOfTweet(@PathVariable("id") Long id) {
+    @GetMapping(value="/{id}/context")
+    public ContextDto getContextOfTweet(@PathVariable("id") Long id) {
         return tweetService.getContextOfTweet(id);
     }
     

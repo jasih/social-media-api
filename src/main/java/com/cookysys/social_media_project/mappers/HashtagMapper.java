@@ -10,6 +10,6 @@ import com.cookysys.social_media_project.entities.Hashtag;
 @Mapper(componentModel = "spring")
 public interface HashtagMapper {
 
-	List<HashtagDto> entitiesToDtos(List<Hashtag> findAll);
+	List<HashtagDto> entitiesToDtos(List<Hashtag> hashtags);
 
 }

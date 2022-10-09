@@ -14,14 +14,11 @@ import com.cookysys.social_media_project.entities.Tweet;
 @Mapper(componentModel = "spring", uses = { UserMapper.class })
 public interface TweetMapper {
 
-//	List<TweetResponseDto> entitiesToDto(List<Tweet> tweets);
-//
-//	List<TweetResponseDto> entityToDto(Tweet tweet);
-//
-//	Tweet dtoToEntity(TweetRequestDto tweetRequestDto);
-	
-	List<TweetResponseDto> entitiesToDtos(List<Tweet> findAll);
+Tweet requestDtoToEntity(TweetRequestDto tweetRequestDto);
 
-//	TweetResponseDto entitiesToDto(List<Tweet> userReplies);
+TweetResponseDto entityToResponseDto(Tweet tweet);
 
+List<TweetResponseDto> entitiesToResponseDtos(List<Tweet> tweets);
+
+List<TweetResponseDto> entitiesToDtos(List<Tweet> findAll);
 }

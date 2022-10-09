@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ProfileEmbeddable {
-
 	
 	private String firstName;
 	

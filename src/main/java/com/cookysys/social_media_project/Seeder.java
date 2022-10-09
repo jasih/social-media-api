@@ -16,7 +16,6 @@ import com.cookysys.social_media_project.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -30,135 +29,136 @@ public class Seeder implements CommandLineRunner {
 // --- User 1 ---
 	// Credentials
 	public void run(String... args) throws Exception {
-		CredentialsEmbeddable user1Cred = new CredentialsEmbeddable();
-		user1Cred.setUsername("therealmc");
-		user1Cred.setPassword("Password");
+	
+    CredentialsEmbeddable user1Cred = new CredentialsEmbeddable();
+    user1Cred.setUsername("therealmc");
+    user1Cred.setPassword("Password");
 
-		User user1 = new User();
-		user1.setCredentials(user1Cred);
+    User user1 = new User();
+    user1.setCredentials(user1Cred);
 
-		// Profile
-		ProfileEmbeddable user1Pro = new ProfileEmbeddable();
-		user1Pro.setFirstName("Master");
-		user1Pro.setLastName("Chief");
-		user1Pro.setEmail("sierra117@email.com");
-		user1Pro.setPhoneNumber("123-456-7890");
-		user1.setProfile(user1Pro);
+    // Profile
+    ProfileEmbeddable user1Pro = new ProfileEmbeddable();
+    user1Pro.setFirstName("Master");
+    user1Pro.setLastName("Chief");
+    user1Pro.setEmail("sierra117@email.com");
+    user1Pro.setPhoneNumber("123-456-7890");
+    user1.setProfile(user1Pro);
 
-		// Deleted
-		user1.setDeleted(false);
+    // Deleted
+    user1.setDeleted(false);
 
-		// --- User 2 ---
-		// Credentials
-		CredentialsEmbeddable user2Cred = new CredentialsEmbeddable();
-		user2Cred.setUsername("mario");
-		user2Cred.setPassword("password");
+    // --- User 2 ---
+    // Credentials
+    CredentialsEmbeddable user2Cred = new CredentialsEmbeddable();
+    user2Cred.setUsername("mario");
+    user2Cred.setPassword("password");
 
-		User user2 = new User();
-		user2.setCredentials(user2Cred);
+    User user2 = new User();
+    user2.setCredentials(user2Cred);
 
-		// Profile
-		ProfileEmbeddable user2Pro = new ProfileEmbeddable();
-		user2Pro.setFirstName("Mario");
-		user2Pro.setLastName("Mario");
-		user2Pro.setEmail("mario@email.com");
-		user2Pro.setPhoneNumber("234-567-8901");
-		user2.setProfile(user2Pro);
-		// Deleted
-		user2.setDeleted(false);
+    // Profile
+    ProfileEmbeddable user2Pro = new ProfileEmbeddable();
+    user2Pro.setFirstName("Mario");
+    user2Pro.setLastName("Mario");
+    user2Pro.setEmail("mario@email.com");
+    user2Pro.setPhoneNumber("234-567-8901");
+    user2.setProfile(user2Pro);
+    // Deleted
+    user2.setDeleted(false);
 
-		// --- User 3 ---
-		CredentialsEmbeddable user3Cred = new CredentialsEmbeddable();
-		// Credentials
-		user3Cred.setUsername("Luigi");
-		user3Cred.setPassword("Password");
+    // --- User 3 ---
+    CredentialsEmbeddable user3Cred = new CredentialsEmbeddable();
+    // Credentials
+    user3Cred.setUsername("Luigi");
+    user3Cred.setPassword("Password");
 
-		User user3 = new User();
-		user3.setCredentials(user3Cred);
+    User user3 = new User();
+    user3.setCredentials(user3Cred);
 
-		// Profile
-		ProfileEmbeddable user3Pro = new ProfileEmbeddable();
-		user3Pro.setFirstName("Luigi");
-		user3Pro.setLastName("Mario");
-		user3Pro.setEmail("luigi@email.com");
-		user3Pro.setPhoneNumber("345-678-9012");
-		user3.setProfile(user3Pro);
-		// Deleted
-		user3.setDeleted(false);
+    // Profile
+    ProfileEmbeddable user3Pro = new ProfileEmbeddable();
+    user3Pro.setFirstName("Luigi");
+    user3Pro.setLastName("Mario");
+    user3Pro.setEmail("luigi@email.com");
+    user3Pro.setPhoneNumber("345-678-9012");
+    user3.setProfile(user3Pro);
+    // Deleted
+    user3.setDeleted(false);
 
-		// --- User 4 ---
-		// Credentials
-		CredentialsEmbeddable user4Cred = new CredentialsEmbeddable();
-		user4Cred.setUsername("Nathan");
-		user4Cred.setPassword("Password");
+    // --- User 4 ---
+    // Credentials
+    CredentialsEmbeddable user4Cred = new CredentialsEmbeddable();
+    user4Cred.setUsername("Nathan");
+    user4Cred.setPassword("Password");
 
-		User user4 = new User();
-		user4.setCredentials(user4Cred);
+    User user4 = new User();
+    user4.setCredentials(user4Cred);
 
-		// Profile
-		ProfileEmbeddable user4Pro = new ProfileEmbeddable();
-		user4Pro.setFirstName("Nathan");
-		user4Pro.setLastName("Drake");
-		user4Pro.setEmail("nathan@email.com");
-		user4Pro.setPhoneNumber("456-789-0023");
-		user4.setProfile(user4Pro);
-		// Deleted
-		user4.setDeleted(false);
+    // Profile
+    ProfileEmbeddable user4Pro = new ProfileEmbeddable();
+    user4Pro.setFirstName("Nathan");
+    user4Pro.setLastName("Drake");
+    user4Pro.setEmail("nathan@email.com");
+    user4Pro.setPhoneNumber("456-789-0023");
+    user4.setProfile(user4Pro);
+    // Deleted
+    user4.setDeleted(false);
 
-		// --- User 5 ---
-		// Credentials
-		CredentialsEmbeddable user5Cred = new CredentialsEmbeddable();
-		user5Cred.setUsername("Tarnished");
-		user5Cred.setPassword("Password");
+    // --- User 5 ---
+    // Credentials
+    CredentialsEmbeddable user5Cred = new CredentialsEmbeddable();
+    user5Cred.setUsername("Tarnished");
+    user5Cred.setPassword("Password");
 
-		User user5 = new User();
-		user5.setCredentials(user5Cred);
+    User user5 = new User();
+    user5.setCredentials(user5Cred);
 
-		// Profile
-		ProfileEmbeddable user5Pro = new ProfileEmbeddable();
-		user5Pro.setFirstName("The");
-		user5Pro.setLastName("Tarnished");
-		user5Pro.setEmail("willibecometheeldenlord@email.com");
-		user5Pro.setPhoneNumber("567-890-0034");
-		user5.setProfile(user5Pro);
-		// Deleted
-		user5.setDeleted(false);
+    // Profile
+    ProfileEmbeddable user5Pro = new ProfileEmbeddable();
+    user5Pro.setFirstName("The");
+    user5Pro.setLastName("Tarnished");
+    user5Pro.setEmail("willibecometheeldenlord@email.com");
+    user5Pro.setPhoneNumber("567-890-0034");
+    user5.setProfile(user5Pro);
+    // Deleted
+    user5.setDeleted(false);
 
-		// --- User 6 ---
-		// Credentials
-		CredentialsEmbeddable deletedUserCred = new CredentialsEmbeddable();
-		deletedUserCred.setUsername("DeletedUser");
-		deletedUserCred.setPassword("Password");
+    // --- User 6 ---
+    // Credentials
+    CredentialsEmbeddable deletedUserCred = new CredentialsEmbeddable();
+    deletedUserCred.setUsername("DeletedUser");
+    deletedUserCred.setPassword("Password");
 
-		User deletedUser = new User();
-		deletedUser.setCredentials(deletedUserCred);
+    User deletedUser = new User();
+    deletedUser.setCredentials(deletedUserCred);
 
-		// Profile
-		ProfileEmbeddable deletedUserPro = new ProfileEmbeddable();
-		deletedUserPro.setFirstName("Deleted");
-		deletedUserPro.setLastName("User");
-		deletedUserPro.setEmail("Deleted@User.com");
-		deletedUserPro.setPhoneNumber("NULL");
-		deletedUser.setProfile(deletedUserPro);
-		// Deleted
-		deletedUser.setDeleted(true);
-		userRepository.saveAllAndFlush(Arrays.asList(user1, user2, user3, user4, user5, deletedUser));
+    // Profile
+    ProfileEmbeddable deletedUserPro = new ProfileEmbeddable();
+    deletedUserPro.setFirstName("Deleted");
+    deletedUserPro.setLastName("User");
+    deletedUserPro.setEmail("Deleted@User.com");
+    deletedUserPro.setPhoneNumber("NULL");
+    deletedUser.setProfile(deletedUserPro);
+    // Deleted
+    deletedUser.setDeleted(true);
+    userRepository.saveAllAndFlush(Arrays.asList(user1, user2, user3, user4, user5, deletedUser));
 
-		// ----- HASHTAGS -----
+    // ----- HASHTAGS -----
 
-		Hashtag hashtag1 = new Hashtag();
-		hashtag1.setLabel("#eldenlord");
+    Hashtag hashtag1 = new Hashtag();
+    hashtag1.setLabel("#eldenlord");
 
-		Hashtag hashtag2 = new Hashtag();
-		hashtag2.setLabel("#mario");
+    Hashtag hashtag2 = new Hashtag();
+    hashtag2.setLabel("#mario");
 
-		Hashtag hashtag3 = new Hashtag();
-		hashtag3.setLabel("#luigi");
+    Hashtag hashtag3 = new Hashtag();
+    hashtag3.setLabel("#luigi");
 
-		Hashtag hashtag4 = new Hashtag();
-		hashtag4.setLabel("#whereiscortana");
+    Hashtag hashtag4 = new Hashtag();
+    hashtag4.setLabel("#whereiscortana");
 
-		hashtagRepository.saveAllAndFlush(Arrays.asList(hashtag1, hashtag2, hashtag3, hashtag4));
+    hashtagRepository.saveAllAndFlush(Arrays.asList(hashtag1, hashtag2, hashtag3, hashtag4));
 
 //		// ----- TWEETS -----
 

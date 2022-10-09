@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cookysys.social_media_project.dtos.HashtagDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
-import com.cookysys.social_media_project.entities.Hashtag;
 import com.cookysys.social_media_project.services.HashtagService;
 
 import lombok.RequiredArgsConstructor;

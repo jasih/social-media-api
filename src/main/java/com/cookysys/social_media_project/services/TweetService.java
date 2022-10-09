@@ -2,32 +2,36 @@ package com.cookysys.social_media_project.services;
 
 import java.util.List;
 
+import com.cookysys.social_media_project.dtos.ContextDto;
+import com.cookysys.social_media_project.dtos.CredentialsDto;
+import com.cookysys.social_media_project.dtos.HashtagDto;
 import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
-import com.cookysys.social_media_project.dtos.UserRequestDto;
 import com.cookysys.social_media_project.dtos.UserResponseDto;
+import com.cookysys.social_media_project.dtos.UserRequestDto;
+import com.cookysys.social_media_project.embeddables.CredentialsEmbeddable;
 
 public interface TweetService {
 
     List<TweetResponseDto> getAllTweets();
 
-    TweetResponseDto createTweet(TweetRequestDto tweet);
-
     TweetResponseDto getTweet(Long id);
 
-    TweetResponseDto deleteTweet(Long id);
+    TweetResponseDto createTweet(TweetRequestDto tweetRequestDto);
 
-    TweetResponseDto likeTweet(Long id, UserRequestDto user);
+    TweetResponseDto deleteTweet(Long id, CredentialsDto credentialsDto);
 
-    TweetResponseDto replyToTweet(Long id, String reply);
+    TweetResponseDto likeTweet(Long id, CredentialsDto credentialsDto);
 
-    TweetResponseDto getHashtagOfTweet(Long id);
+    TweetResponseDto replyToTweet(Long id, TweetRequestDto tweetRequestDto);
 
-    TweetResponseDto repostTweet(Long id, UserRequestDto user);
+    TweetResponseDto repostTweet(Long id, CredentialsDto credentialsDto);
 
-    TweetResponseDto getUsersWhoLikedATweet(Long id);
+    List<HashtagDto> getHashtagsOfTweet(Long id);
 
-    TweetResponseDto getContextOfTweet(Long id);
+    List<UserResponseDto> getUsersWhoLikedATweet(Long id);
+
+    ContextDto getContextOfTweet(Long id);
 
 	List<TweetResponseDto> getRepliesToTweets(Long id);
 

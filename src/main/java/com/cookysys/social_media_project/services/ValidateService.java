@@ -12,4 +12,6 @@ public interface ValidateService {
 	
 	public User authenticate(CredentialsDto credentialsDto) throws NotAuthorizedException;
 
+	boolean userNameExists(String username);
+
 }

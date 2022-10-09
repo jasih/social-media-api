@@ -40,7 +40,6 @@ public class TweetServiceImpl implements TweetService {
     private final TweetRepository tweetRepository;
     private final UserRepository userRepository;
     private final CredentialsDto credentialsDto;
-    private final TweetResponseDto tweetResponseDto;
 
     private Tweet checkTweet(Long id) {
         Optional<Tweet> optionalTweet = tweetRepository.findById(id);
@@ -132,7 +131,7 @@ public class TweetServiceImpl implements TweetService {
 
         TweetResponseDto deleteTweet = tweetMapper.entityToResponseDto(tweetToDelete);
         UserResponseDto deleter = userMapper.entityToResponseDto(user);
-        deleter.setUsername(credentialsDto.getUsername());
+        deleter.setUsername(user.getCredentials().getUsername());
         deleteTweet.setAuthor(deleter);
         tweetToDelete.setDeleted(true);
         tweetRepository.saveAndFlush(tweetToDelete);

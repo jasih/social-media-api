@@ -15,6 +15,7 @@ import com.cookysys.social_media_project.dtos.CredentialsDto;
 import com.cookysys.social_media_project.dtos.HashtagDto;
 import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
+import com.cookysys.social_media_project.dtos.UserRequestDto;
 import com.cookysys.social_media_project.dtos.UserResponseDto;
 import com.cookysys.social_media_project.services.TweetService;
 
@@ -76,5 +77,20 @@ public class TweetController {
     public ContextDto getContextOfTweet(@PathVariable("id") Long id) {
         return tweetService.getContextOfTweet(id);
     }
+    
+    @GetMapping("/{id}/replies")
+    public List<TweetResponseDto> getRepliesToTweets(@PathVariable Long id) {
+    	return tweetService.getRepliesToTweets(id);
+    }
+    
+    @GetMapping("/{id}/reposts")
+    public List<TweetResponseDto> getRepostsOfTweets(@PathVariable Long id) {
+    	return tweetService.getRepostsOfTweets(id);
+    }
 
+    @GetMapping("/{id}/mentions")
+    public List<UserResponseDto> getMentions(@PathVariable Long id) {
+    	return tweetService.getMentions(id);
+    }
+    
 }

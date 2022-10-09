@@ -8,6 +8,7 @@ import com.cookysys.social_media_project.dtos.HashtagDto;
 import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
 import com.cookysys.social_media_project.dtos.UserResponseDto;
+import com.cookysys.social_media_project.embeddables.CredentialsEmbeddable;
 
 public interface TweetService {
 
@@ -30,5 +31,11 @@ public interface TweetService {
     List<UserResponseDto> getUsersWhoLikedATweet(Long id);
 
     ContextDto getContextOfTweet(Long id);
+
+	List<TweetResponseDto> getRepliesToTweets(Long id);
+
+	List<TweetResponseDto> getRepostsOfTweets(Long id);
+
+	List<UserResponseDto> getMentions(Long id);
 
 }

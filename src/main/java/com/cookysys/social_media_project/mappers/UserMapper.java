@@ -5,6 +5,7 @@ import java.util.List;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
+import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.UserRequestDto;
 import com.cookysys.social_media_project.dtos.UserResponseDto;
 import com.cookysys.social_media_project.entities.User;
@@ -18,7 +19,9 @@ public interface UserMapper {
     @Mapping(target = "username", source = "credentials.username")
     UserResponseDto entityToResponseDto(User user);
 
-	List<UserResponseDto> entitiesToResponseDto(List<User> users);
+	List<UserResponseDto> entityToResponseDto(List<User> users);
+
+	User dtoToEntity(TweetRequestDto tweetRequestDto);
     
     
 }

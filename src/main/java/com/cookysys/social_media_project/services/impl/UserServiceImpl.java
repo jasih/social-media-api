@@ -144,7 +144,6 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-<<<<<<< HEAD
 	@Override
 	public void unfollowUser(CredentialsDto credentialsDto, String username) {
 		

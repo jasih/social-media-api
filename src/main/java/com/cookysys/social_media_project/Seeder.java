@@ -1,5 +1,6 @@
 package com.cookysys.social_media_project;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -296,13 +297,7 @@ public class Seeder implements CommandLineRunner {
 		// Set Content @PARAM String
 		mention1.setContent("This is some content for tweet mention 1");
 		tweetRepository.saveAndFlush(mention1);
-
-//		// ----- MENTIONS -----
-//
-//		User mention1 = new User();
-//		mention1.setMentions(user1Tweets);
-//				
-//		userRepository.saveAllAndFlush(Arrays.asList(mention1));
+		
 
 		// Following
 		List<User> following_1 = List.of(user2, user3, user4, deletedUser);

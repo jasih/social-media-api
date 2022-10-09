@@ -76,7 +76,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<TweetResponseDto> getTweets(String tweets) {
+	public List<TweetResponseDto> getTweets(String username) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<TweetResponseDto> getMentions(String tweets) {
+	public List<TweetResponseDto> getMentions(String username) {
 		// TODO Auto-generated method stub
 		return null;
 	}

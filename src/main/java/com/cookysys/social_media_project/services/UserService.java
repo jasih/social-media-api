@@ -79,7 +79,7 @@ public interface UserService {
 		Retrieves all (non-deleted) tweets authored by the user with the given username. This includes simple tweets, reposts, and replies. The tweets should appear in reverse-chronological order. If no active user with that username exists (deleted or never created), an error should be sent in lieu of a response.
 	*/
 	
-	List<TweetResponseDto> getTweets(String tweets);
+	List<TweetResponseDto> getTweets(String username);
 
 	/*
 	 * GET users/@{username}/followers
@@ -94,6 +94,6 @@ public interface UserService {
 		A user is considered “mentioned” by a tweet if the tweet has content and the user’s username appears in that content following a @.
 	*/
 	
-	List<TweetResponseDto> getMentions(String tweets);
+	List<TweetResponseDto> getMentions(String username);
 	
 }

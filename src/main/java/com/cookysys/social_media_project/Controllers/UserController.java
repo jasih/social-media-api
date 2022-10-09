@@ -75,8 +75,8 @@ public class UserController {
 	}
 
 	@GetMapping("/@{username}/tweets")
-	public List<TweetResponseDto> getTweets(@PathVariable String tweets) {
-		return userService.getTweets(tweets);
+	public List<TweetResponseDto> getTweets(@PathVariable String username) {
+		return userService.getTweets(username);
 	}
 	
 	@GetMapping("/@{username}/followers")
@@ -85,7 +85,7 @@ public class UserController {
 	}
 	
 	@GetMapping("/@{username}/mentions")
-	public List<TweetResponseDto> getMentions(@PathVariable String tweets) {
-		return userService.getMentions(tweets);
+	public List<TweetResponseDto> getMentions(@PathVariable String username) {
+		return userService.getMentions(username);
 	}
 }

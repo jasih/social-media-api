@@ -28,6 +28,8 @@ public class HashtagServiceImpl implements HashtagService {
 
 	private final TweetMapper tweetMapper;
 	private final TweetRepository tweetRepository;
+	
+	private final ValidateServiceImpl validateServiceImpl;
 
 	private Hashtag getLabel(String label) {
 		Optional<Hashtag> hashtag = hashtagRepository.findByLabelContainingIgnoreCase(label);
@@ -48,16 +50,19 @@ public class HashtagServiceImpl implements HashtagService {
 	// hashtag's label appears in that content following a #
 	@Override
 	public List<TweetResponseDto> getTweetsWithLabel(String label) {
+		if (!validateServiceImpl.labelExists(label)) {
+			throw new NotFoundException("No hashtag with this label: " + label);
+		}
 		Hashtag hashtagWithLabel = getLabel(label);
 		List<Tweet> tweets = hashtagWithLabel.getTweets();
 		for (Tweet tweet : tweets) {
-			if (!label.matches(hashtagWithLabel.getLabel())) {
-				throw new NotFoundException("No hashtag was found with this label: " + label);
+			if (tweet.isDeleted()) {
+				tweets.remove(tweet);
 			}
-			return tweetMapper.entitiesToResponseDtos(tweets);
 		}
-
-		return tweetMapper.entitiesToResponseDtos(tweets);
+		
+		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToDtos(tweets);
+		return tweetResponses;	
 	}
 
 }

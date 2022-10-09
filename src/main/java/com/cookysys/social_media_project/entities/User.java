@@ -45,7 +45,7 @@ public class User {
 	private List<Tweet> likedTweets;
 	
 	@ManyToMany(mappedBy = "followers")
-	private List<User>following;
+	private List<User> following;
 	
 	@ManyToMany
 	@JoinTable

@@ -53,19 +53,14 @@ public class ValidateServiceImpl implements ValidateService  {
         return true;
 	}
 	
-	
-	//TODO: checks the string, but not special characters
 	@Override
 	public boolean labelExists(String label) {
-		List<Hashtag> hashtags = hashtagRepository.findAllByLabelContainingIgnoreCase(label);
-		for (Hashtag hashtag : hashtags) {
-			if (!hashtags.isEmpty()) {
-				return true;
-			} else {
-				throw new NotFoundException("No label with this label found: " + label);
-			}
+		if ('#' != label.charAt(0)) {
+			label = "#" + label;
 		}
-		return false;
+		Optional<Hashtag> hashtag = hashtagRepository.findByLabelContainingIgnoreCase(label);
+		return !hashtag.isEmpty();
+		
 	}
 
 	public User authenticate(CredentialsDto credentialsDto) throws NotAuthorizedException {

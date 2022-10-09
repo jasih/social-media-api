@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 
-@ControllerAdvice(basePackages = { "com.cookysys.social_media_project.controllers" })
+@ControllerAdvice(basePackages = { "com.cookysys.social_media_project.Controllers" })
 @ResponseBody
 public class SocialMediaControllerAdvice {
 

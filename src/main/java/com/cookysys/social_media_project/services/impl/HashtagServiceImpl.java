@@ -61,7 +61,7 @@ public class HashtagServiceImpl implements HashtagService {
 			}
 		}
 
-		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToDtos(tweets);
+		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToResponseDtos(tweets);
 		return tweetResponses;
 	}
 

@@ -19,6 +19,7 @@ import com.cookysys.social_media_project.mappers.UserMapper;
 import com.cookysys.social_media_project.repositories.UserRepository;
 import com.cookysys.social_media_project.services.UserService;
 import com.cookysys.social_media_project.services.ValidateService;
+import java.util.Collections;
 
 import lombok.RequiredArgsConstructor;
 
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public List<UserResponseDto> getAllUsers() {
 		
-		return userMapper.entitiesToResponseDto(userRepository.findAllByDeletedFalse());
+		return userMapper.entityToResponseDto(userRepository.findAllByDeletedFalse());
 	}
 
 	@Override
@@ -148,7 +149,6 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
-<<<<<<< HEAD
 	@Override
 	public void unfollowUser(CredentialsDto credentialsDto, String username) {
 		
@@ -167,27 +167,27 @@ public class UserServiceImpl implements UserService {
 		return null;
 	}
 
-//	@Override
-//	public List<UserResponseDto> getFollowing(String username) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<TweetResponseDto> getTweets(String tweets) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<UserResponseDto> getFollowers(String username) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//	@Override
-//	public List<TweetResponseDto> getMentions(String tweets) {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
+	@Override
+	public List<UserResponseDto> getFollowing(String username) {
+		// TODO Auto-generated method stub
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<TweetResponseDto> getTweets(String tweets) {
+		// TODO Auto-generated method stub
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<UserResponseDto> getFollowers(String username) {
+		// TODO Auto-generated method stub
+		return Collections.emptyList();
+	}
+
+	@Override
+	public List<TweetResponseDto> getMentions(String tweets) {
+		// TODO Auto-generated method stub
+		return Collections.emptyList();
+	}
 }

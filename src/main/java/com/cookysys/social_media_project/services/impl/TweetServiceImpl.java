@@ -1,20 +1,17 @@
 package com.cookysys.social_media_project.services.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import com.cookysys.social_media_project.dtos.ContextDto;
 import com.cookysys.social_media_project.dtos.CredentialsDto;
 import com.cookysys.social_media_project.dtos.HashtagDto;
 import com.cookysys.social_media_project.dtos.TweetRequestDto;
 import com.cookysys.social_media_project.dtos.TweetResponseDto;
-import com.cookysys.social_media_project.dtos.UserRequestDto;
 import com.cookysys.social_media_project.dtos.UserResponseDto;
 import com.cookysys.social_media_project.embeddables.CredentialsEmbeddable;
 import com.cookysys.social_media_project.entities.Tweet;
@@ -43,7 +40,6 @@ public class TweetServiceImpl implements TweetService {
     private final TweetRepository tweetRepository;
     private final UserRepository userRepository;
     private final CredentialsDto credentialsDto;
-    private final TweetResponseDto tweetResponseDto;
 
     private Tweet checkTweet(Long id) {
         Optional<Tweet> optionalTweet = tweetRepository.findById(id);
@@ -52,7 +48,7 @@ public class TweetServiceImpl implements TweetService {
         }
         return optionalTweet.get();
     }
-    
+
     private void validateTweet(TweetRequestDto tweetRequestDto) {
         if (tweetRequestDto.getContent() == null || tweetRequestDto.getCredentials() == null) {
             throw new BadRequestException("Invalid input.");
@@ -62,6 +58,12 @@ public class TweetServiceImpl implements TweetService {
     private User findUser(String username) {
         List<User> users = userRepository.findAll();
         for (User user : users) {
+            if (user == null) {
+                throw new NotFoundException("User not found.");
+            }
+            if (!user.getCredentials().getPassword().equals(credentialsDto.getPassword())) {
+                throw new NotAuthorizedException("Your do not have permission to repost this tweet.");
+            }
             if (user.getCredentials().getUsername().equals(username)) {
                 return user;
             }
@@ -72,7 +74,8 @@ public class TweetServiceImpl implements TweetService {
     @Override
     public List<TweetResponseDto> getAllTweets() {
         List<Tweet> tweets = tweetRepository.findAll();
-        List<TweetResponseDto> tweetsToGet = new ArrayList<>(tweetMapper.entitiesToResponseDtos(tweetRepository.findAll(Sort.by(Sort.Direction.DESC))));
+        List<TweetResponseDto> tweetsToGet = new ArrayList<>(
+                tweetMapper.entitiesToResponseDtos(tweetRepository.findAll(Sort.by(Sort.Direction.DESC))));
         for (Tweet tweet : tweets) {
             if (!tweet.isDeleted()) {
                 TweetResponseDto tweetToGet = tweetMapper.entityToResponseDto(tweet);
@@ -102,38 +105,33 @@ public class TweetServiceImpl implements TweetService {
         CredentialsEmbeddable credentials = credentialsMapper.requestDtoToEntity(tweetRequestDto.getCredentials());
 
         User user = findUser(credentials.getUsername());
-            if (user == null) {
-                throw new BadRequestException("User doesn't exist.");
-            }
-            if (!newTweet.getAuthor().getCredentials().equals(credentials)) {
-                throw new NotAuthorizedException("You are not authorized to use this account.");
-            }
         newTweet.setAuthor(user);
         tweetRepository.saveAndFlush(newTweet);
 
-        List<Tweet> userTweets = user.getTweets();
-        userTweets.add(newTweet);
-        user.setTweets(userTweets);
+        List<Tweet> tweets = user.getTweets();
+        tweets.add(newTweet);
+        user.setTweets(tweets);
+        user.setDeleted(false);
         userRepository.saveAndFlush(user);
+
+        // implement method that processes mentions and hashtags
 
         TweetResponseDto createdTweet = tweetMapper.entityToResponseDto(newTweet);
         UserResponseDto tweetCreator = createdTweet.getAuthor();
         tweetCreator.setUsername(user.getCredentials().getUsername());
         createdTweet.setAuthor(tweetCreator);
-        
+
         return createdTweet;
     }
 
     @Override
     public TweetResponseDto deleteTweet(Long id, CredentialsDto credentialsDto) {
         Tweet tweetToDelete = checkTweet(id);
-            if (!tweetToDelete.getAuthor().getCredentials().equals(credentialsDto)) {
-                throw new NotAuthorizedException("You do not have permission to delete this tweet.");
-            }
+        User user = findUser(credentialsDto.getUsername());
 
         TweetResponseDto deleteTweet = tweetMapper.entityToResponseDto(tweetToDelete);
-        UserResponseDto deleter = deleteTweet.getAuthor();
-        deleter.setUsername(credentialsDto.getUsername());
+        UserResponseDto deleter = userMapper.entityToResponseDto(user);
+        deleter.setUsername(user.getCredentials().getUsername());
         deleteTweet.setAuthor(deleter);
         tweetToDelete.setDeleted(true);
         tweetRepository.saveAndFlush(tweetToDelete);
@@ -145,12 +143,6 @@ public class TweetServiceImpl implements TweetService {
     public TweetResponseDto likeTweet(Long id, CredentialsDto credentialsDto) {
         Tweet tweetToLike = checkTweet(id);
         User liker = findUser(credentialsDto.getUsername());
-            if (liker == null) {
-                throw new NotFoundException("User not found.");
-            }
-            if (!liker.getCredentials().getPassword().equals(credentialsDto.getPassword())) {
-                throw new NotAuthorizedException("Your do not have permission to like this tweet.");
-            }
 
         List<Tweet> tweets = liker.getLikedTweets();
         tweets.add(tweetToLike);
@@ -167,20 +159,54 @@ public class TweetServiceImpl implements TweetService {
 
     @Override
     public TweetResponseDto replyToTweet(Long id, TweetRequestDto tweetRequestDto) {
-        // TODO Auto-generated method stub
-        return null;
+        validateTweet(tweetRequestDto);
+        Tweet tweetToReplyTo = checkTweet(id);
+        Tweet tweetReply = tweetMapper.requestDtoToEntity(tweetRequestDto);
+        CredentialsEmbeddable credentials = credentialsMapper.requestDtoToEntity((tweetRequestDto.getCredentials()));
+
+        User replier = findUser(credentials.getUsername());
+        tweetReply.setAuthor(replier);
+        tweetRepository.saveAndFlush(tweetReply);
+
+        List<Tweet> replies = replier.getTweets();
+        replies.add(tweetReply);
+        replier.setTweets(replies);
+        tweetReply.setInReplyTo(tweetToReplyTo);
+        userRepository.saveAndFlush(replier);
+
+        // implement method that processes mentions and hashtags
+
+        TweetResponseDto repliedTweet = tweetMapper.entityToResponseDto(tweetReply);
+        UserResponseDto tweetReplier = repliedTweet.getAuthor();
+        tweetReplier.setUsername(replier.getCredentials().getUsername());
+        repliedTweet.setAuthor(tweetReplier);
+
+        return repliedTweet;
     }
 
     @Override
-    public List<HashtagDto> getHashtagsOfTweet(Long id) {
+    public List<HashtagDto> getTweetHashtags(Long id) {
         Tweet tweet = checkTweet(id);
         return hashtagMapper.entitiesToDtos(tweet.getHashtags());
     }
 
     @Override
     public TweetResponseDto repostTweet(Long id, CredentialsDto credentialsDto) {
-        // TODO Auto-generated method stub
-        return null;
+        Tweet tweetToRepost = checkTweet(id);
+        User reposter = findUser(credentialsDto.getUsername());
+
+        Tweet repost = new Tweet();
+        repost.setAuthor(reposter);
+        repost.setContent(tweetToRepost.getContent());
+        repost.setRepostOf(tweetToRepost);
+        tweetRepository.saveAndFlush(repost);
+
+        TweetResponseDto repostedTweet = tweetMapper.entityToResponseDto(repost);
+        UserResponseDto tweetReposter = repostedTweet.getAuthor();
+        tweetReposter.setUsername(reposter.getCredentials().getUsername());
+        repostedTweet.setAuthor(tweetReposter);
+
+        return repostedTweet;
     }
 
     @Override
@@ -198,7 +224,7 @@ public class TweetServiceImpl implements TweetService {
 
     @Override
     public ContextDto getContextOfTweet(Long id) {
-        // TODO Auto-generated method stub
+        // TODO Auto-generated method stubs
         return null;
     }
 

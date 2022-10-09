@@ -133,21 +133,27 @@ public class UserServiceImpl implements UserService {
 	public void followUser(String followerUsername, CredentialsDto credentialsDto) {
 		
 		//Follower
-		final String user = validateService.authenticate(credentialsDto);
+		final User user = validateService.authenticate(credentialsDto);
 		
-		final String follower = validateUsername(followerUsername, "User To Follow Not Found");
+		final User follower = validateUsername(followerUsername, "User To Follow Not Found");
 		
 		if(!follower.getFollowers().contains(user)) {
 			follower.getFollowers().add(user);
-			userRepository.saveAllAndFlush(follower);
+			userRepository.saveAndFlush(follower);
 		}
 		
 	}
 
 	@Override
 	public void unfollowUser(CredentialsDto credentialsDto, String username) {
-		// TODO Auto-generated method stub
 		
+		//Follower
+		final User user = validateService.authenticate(credentialsDto);
+		
+		final User unfollow = validateUsername(username, "User Not Found");
+		
+		unfollow.getFollowers().remove(user);
+		userRepository.saveAndFlush(unfollow);
 	}
 	
 	@Override

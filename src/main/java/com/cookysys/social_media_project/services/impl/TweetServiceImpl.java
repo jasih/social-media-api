@@ -59,6 +59,12 @@ public class TweetServiceImpl implements TweetService {
     private User findUser(String username) {
         List<User> users = userRepository.findAll();
         for (User user : users) {
+            if (user == null) {
+                throw new NotFoundException("User not found.");
+            }
+            if (!user.getCredentials().getPassword().equals(credentialsDto.getPassword())) {
+                throw new NotAuthorizedException("Your do not have permission to repost this tweet.");
+            }
             if (user.getCredentials().getUsername().equals(username)) {
                 return user;
             }
@@ -100,12 +106,6 @@ public class TweetServiceImpl implements TweetService {
         CredentialsEmbeddable credentials = credentialsMapper.requestDtoToEntity(tweetRequestDto.getCredentials());
 
         User user = findUser(credentials.getUsername());
-        if (user == null) {
-            throw new BadRequestException("Please make an account to make a tweet.");
-        }
-        if (!newTweet.getAuthor().getCredentials().equals(credentials)) {
-            throw new NotAuthorizedException("You are not authorized to use this account.");
-        }
         newTweet.setAuthor(user);
         tweetRepository.saveAndFlush(newTweet);
 
@@ -129,15 +129,9 @@ public class TweetServiceImpl implements TweetService {
     public TweetResponseDto deleteTweet(Long id, CredentialsDto credentialsDto) {
         Tweet tweetToDelete = checkTweet(id);
         User user = findUser(credentialsDto.getUsername());
-        if (user == null) {
-            throw new BadRequestException("Cannot delete. Account does not exist");
-        }
-        if (!user.getCredentials().getPassword().equals(credentialsDto.getPassword())) {
-            throw new NotAuthorizedException("You do not have permission to delete this tweet.");
-        }
 
         TweetResponseDto deleteTweet = tweetMapper.entityToResponseDto(tweetToDelete);
-        UserResponseDto deleter = deleteTweet.getAuthor();
+        UserResponseDto deleter = userMapper.entityToResponseDto(user);
         deleter.setUsername(credentialsDto.getUsername());
         deleteTweet.setAuthor(deleter);
         tweetToDelete.setDeleted(true);
@@ -150,12 +144,6 @@ public class TweetServiceImpl implements TweetService {
     public TweetResponseDto likeTweet(Long id, CredentialsDto credentialsDto) {
         Tweet tweetToLike = checkTweet(id);
         User liker = findUser(credentialsDto.getUsername());
-        if (liker == null) {
-            throw new NotFoundException("Please make an account to like this tweet.");
-        }
-        if (!liker.getCredentials().getPassword().equals(credentialsDto.getPassword())) {
-            throw new NotAuthorizedException("Your do not have permission to like this tweet.");
-        }
 
         List<Tweet> tweets = liker.getLikedTweets();
         tweets.add(tweetToLike);
@@ -178,19 +166,12 @@ public class TweetServiceImpl implements TweetService {
         CredentialsEmbeddable credentials = credentialsMapper.requestDtoToEntity((tweetRequestDto.getCredentials()));
 
         User replier = findUser(credentials.getUsername());
-        if (replier == null) {
-            throw new BadRequestException("Please make an account to reply to this tweet.");
-        }
-        if (!tweetToReplyTo.getAuthor().getCredentials().equals(credentials)) {
-            throw new NotAuthorizedException("You are not authorized to use this account.");
-        }
         tweetReply.setAuthor(replier);
         tweetRepository.saveAndFlush(tweetReply);
 
         List<Tweet> replies = replier.getTweets();
         replies.add(tweetReply);
         replier.setTweets(replies);
-        tweetReply.setDeleted(false);
         tweetReply.setInReplyTo(tweetToReplyTo);
         userRepository.saveAndFlush(replier);
 
@@ -214,26 +195,14 @@ public class TweetServiceImpl implements TweetService {
     public TweetResponseDto repostTweet(Long id, CredentialsDto credentialsDto) {
         Tweet tweetToRepost = checkTweet(id);
         User reposter = findUser(credentialsDto.getUsername());
-        if (reposter == null) {
-            throw new NotFoundException("User not found.");
-        }
-        if (!reposter.getCredentials().getPassword().equals(credentialsDto.getPassword())) {
-            throw new NotAuthorizedException("Your do not have permission to repost this tweet.");
-        }
 
-        Tweet tweet = new Tweet();
-        tweet.setAuthor(reposter);
-        tweet.setContent(tweetToRepost.getContent());
-        tweet.setDeleted(false);
-        tweet.setRepostOf(tweetToRepost);
-        tweetRepository.saveAndFlush(tweet);
+        Tweet repost = new Tweet();
+        repost.setAuthor(reposter);
+        repost.setContent(tweetToRepost.getContent());
+        repost.setRepostOf(tweetToRepost);
+        tweetRepository.saveAndFlush(repost);
 
-        List<Tweet> reposts = tweetToRepost.getReposts();
-        reposts.add(tweet);
-        tweetToRepost.setReposts(reposts);
-        tweetRepository.saveAndFlush(tweetToRepost);
-
-        TweetResponseDto repostedTweet = tweetMapper.entityToResponseDto(tweet);
+        TweetResponseDto repostedTweet = tweetMapper.entityToResponseDto(repost);
         UserResponseDto tweetReposter = repostedTweet.getAuthor();
         tweetReposter.setUsername(reposter.getCredentials().getUsername());
         repostedTweet.setAuthor(tweetReposter);

@@ -9,6 +9,10 @@ import com.cookysys.social_media_project.services.ValidateService;
 
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
 @RestController
 @RequestMapping("/validate")
 @RequiredArgsConstructor

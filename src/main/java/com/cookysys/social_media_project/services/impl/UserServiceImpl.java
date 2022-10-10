@@ -1,8 +1,12 @@
 package com.cookysys.social_media_project.services.impl;
 
+import static java.util.function.Predicate.not;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
@@ -78,11 +82,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserResponseDto> getAllUsers() {
-<<<<<<< HEAD
-		
-=======
 
->>>>>>> Janet
 		return userMapper.entityToResponseDto(userRepository.findAllByDeletedFalse());
 	}
 
@@ -176,8 +176,14 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<TweetResponseDto> getFeed(String username) {
-		// TODO Auto-generated method stub
-		return null;
+		final User user = validateUsername(username, "User not found");
+        final var userTweets = user.getTweets().stream().filter(not(Tweet::isDeleted));
+        final var followingTweets = user.getFollowing().stream().filter(not(User::isDeleted)).flatMap(u -> u.getTweets().stream().filter(not(Tweet::isDeleted)));
+        final var tweets = Stream.concat(userTweets, followingTweets)
+            .sorted((a, b) -> b.getPosted().compareTo(a.getPosted()))
+            .collect(Collectors.toList());
+        return tweetMapper.entitiesToResponseDtos(tweets);
+
 	}
 
 	// Retrieves all (non-deleted) tweets authored by the user with the given

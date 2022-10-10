@@ -10,13 +10,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class ProfileEmbeddable {
-	
+
 	private String firstName;
-	
+
 	private String lastName;
-	
-	@Column(nullable=false)
+
+	@Column(nullable = false)
 	private String email;
-	
+
 	private String phoneNumber;
 }

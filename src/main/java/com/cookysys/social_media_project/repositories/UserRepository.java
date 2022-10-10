@@ -10,12 +10,12 @@ import org.springframework.stereotype.Repository;
 import com.cookysys.social_media_project.entities.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{
+public interface UserRepository extends JpaRepository<User, Long> {
 
-		Optional<User> findByCredentialsUsername(String username);
+	Optional<User> findByCredentialsUsername(String username);
 
-		Optional<User> findByCredentialsUsernameAndDeletedFalse(String username);
+	Optional<User> findByCredentialsUsernameAndDeletedFalse(String username);
 
-		List<User> findAllByDeletedFalse();
+	List<User> findAllByDeletedFalse();
 
 }

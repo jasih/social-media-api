@@ -10,8 +10,13 @@ import java.util.stream.Stream;
 
 import org.springframework.stereotype.Service;
 
-import com.cookysys.social_media_project.dtos.*;
+import com.cookysys.social_media_project.dtos.CredentialsDto;
+import com.cookysys.social_media_project.dtos.ProfileDto;
+import com.cookysys.social_media_project.dtos.TweetResponseDto;
+import com.cookysys.social_media_project.dtos.UserRequestDto;
+import com.cookysys.social_media_project.dtos.UserResponseDto;
 import com.cookysys.social_media_project.embeddables.ProfileEmbeddable;
+import com.cookysys.social_media_project.entities.Hashtag;
 import com.cookysys.social_media_project.entities.Tweet;
 import com.cookysys.social_media_project.entities.User;
 import com.cookysys.social_media_project.exceptions.BadRequestException;
@@ -19,9 +24,11 @@ import com.cookysys.social_media_project.exceptions.NotAuthorizedException;
 import com.cookysys.social_media_project.exceptions.NotFoundException;
 import com.cookysys.social_media_project.mappers.TweetMapper;
 import com.cookysys.social_media_project.mappers.UserMapper;
+import com.cookysys.social_media_project.repositories.TweetRepository;
 import com.cookysys.social_media_project.repositories.UserRepository;
 import com.cookysys.social_media_project.services.UserService;
 import com.cookysys.social_media_project.services.ValidateService;
+import java.util.Collections;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,7 +41,6 @@ public class UserServiceImpl implements UserService {
 	private final ValidateService validateService;
 	private final ValidateServiceImpl validateServiceImpl;
 	private final TweetMapper tweetMapper;
-	
 
 	private void validateUserRequest(UserRequestDto userRequestDto) {
 		if (userRequestDto.getCredentials() == null || userRequestDto.getCredentials().getUsername() == null
@@ -176,6 +182,7 @@ public class UserServiceImpl implements UserService {
             .sorted((a, b) -> b.getPosted().compareTo(a.getPosted()))
             .collect(Collectors.toList());
         return tweetMapper.entitiesToResponseDtos(tweets);
+
 	}
 
 	// Retrieves all (non-deleted) tweets authored by the user with the given
@@ -197,7 +204,7 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 
-		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToDtos(userTweets);
+		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToResponseDtos(userTweets);
 		return tweetResponses;
 	}
 
@@ -217,7 +224,7 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 
-		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToDtos(userMentions);
+		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToResponseDtos(userMentions);
 		return tweetResponses;
 	}
 

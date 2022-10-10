@@ -50,7 +50,7 @@ public class TweetServiceImpl implements TweetService {
     }
 
     private void validateTweet(TweetRequestDto tweetRequestDto) {
-        if (tweetRequestDto.getContent() == null || tweetRequestDto.getCredentials() == null) {
+        if (tweetRequestDto.getContent() == null) {
             throw new BadRequestException("Invalid input.");
         }
     }
@@ -75,7 +75,8 @@ public class TweetServiceImpl implements TweetService {
     public List<TweetResponseDto> getAllTweets() {
         List<Tweet> tweets = tweetRepository.findAll();
         List<TweetResponseDto> tweetsToGet = new ArrayList<>(
-                tweetMapper.entitiesToResponseDtos(tweetRepository.findAll(Sort.by(Sort.Direction.DESC))));
+                tweetMapper.entitiesToResponseDtos(
+                        tweetRepository.findAll(Sort.by(Sort.Direction.DESC))));
         for (Tweet tweet : tweets) {
             if (!tweet.isDeleted()) {
                 TweetResponseDto tweetToGet = tweetMapper.entityToResponseDto(tweet);
@@ -111,10 +112,7 @@ public class TweetServiceImpl implements TweetService {
         List<Tweet> tweets = user.getTweets();
         tweets.add(newTweet);
         user.setTweets(tweets);
-        user.setDeleted(false);
         userRepository.saveAndFlush(user);
-
-        // implement method that processes mentions and hashtags
 
         TweetResponseDto createdTweet = tweetMapper.entityToResponseDto(newTweet);
         UserResponseDto tweetCreator = createdTweet.getAuthor();
@@ -174,8 +172,6 @@ public class TweetServiceImpl implements TweetService {
         tweetReply.setInReplyTo(tweetToReplyTo);
         userRepository.saveAndFlush(replier);
 
-        // implement method that processes mentions and hashtags
-
         TweetResponseDto repliedTweet = tweetMapper.entityToResponseDto(tweetReply);
         UserResponseDto tweetReplier = repliedTweet.getAuthor();
         tweetReplier.setUsername(replier.getCredentials().getUsername());
@@ -224,71 +220,91 @@ public class TweetServiceImpl implements TweetService {
 
     @Override
     public ContextDto getContextOfTweet(Long id) {
-        // TODO Auto-generated method stubs
-        return null;
+        Tweet tweet = checkTweet(id);
+        ContextDto context = new ContextDto();
+
+        TweetResponseDto target = tweetMapper.entityToResponseDto(tweet);
+        UserResponseDto targetAuthor = target.getAuthor();
+        targetAuthor.setUsername(tweet.getAuthor().getCredentials().getUsername());
+        target.setAuthor(targetAuthor);
+        context.setTarget(target);
+
+        List<TweetResponseDto> befores = new ArrayList<>();
+        TweetResponseDto before = target.getInReplyTo();
+        UserResponseDto beforeAuthor = before.getAuthor();
+        beforeAuthor.setUsername(before.getAuthor().getUsername());
+        before.setAuthor(beforeAuthor);
+        befores.add(before);
+        context.setBefore(befores);
+
+        context.setAfter(getRepliesToTweets(target.getId()));
+
+        return context;
     }
 
-	// Retrieves the direct replies to the tweet with the given id. If that tweet is
-	// deleted or otherwise doesn’t exist, an error should be sent in lieu of a response.
-	// Deleted replies to the tweet should be excluded from the response.
-	@Override
-	public List<TweetResponseDto> getRepliesToTweets(Long id) {
-		Tweet tweet = tweetRepository.findByIdAndDeletedFalse(id);
-		if (tweet == null) {
-			throw new NotFoundException("No tweet was found with this id: " + id + ". Or this tweet has been deleted.");
-		}
-		
-		List<Tweet> userReplies = tweet.getReplies();
-		List<Tweet> newList = new ArrayList<>();
-		for (Tweet reply : userReplies) {
-			if (!reply.isDeleted()) {
-				newList.add(reply);
-			}
-		}
-	
-		return tweetMapper.entitiesToDtos(newList);
-	}
+    // Retrieves the direct replies to the tweet with the given id. If that tweet is
+    // deleted or otherwise doesn’t exist, an error should be sent in lieu of a
+    // response.
+    // Deleted replies to the tweet should be excluded from the response.
+    @Override
+    public List<TweetResponseDto> getRepliesToTweets(Long id) {
+        Tweet tweet = tweetRepository.findByIdAndDeletedFalse(id);
+        if (tweet == null) {
+            throw new NotFoundException("No tweet was found with this id: " + id + ". Or this tweet has been deleted.");
+        }
 
-	// Retrieves the direct reposts of the tweet with the given id. If that tweet is
-	// deleted or otherwise doesn’t exist, an error should be sent in lieu of a
-	// response.
-	// Deleted reposts of the tweet should be excluded from the response.
-	@Override
-	public List<TweetResponseDto> getRepostsOfTweets(Long id) {
-		Tweet tweet = tweetRepository.findByIdAndDeletedFalse(id);
-		if (tweet == null) {
-			throw new NotFoundException("No tweet was found with this id: " + id + ". Or this tweet has been deleted.");
-		}
-		
-		List<Tweet> userReposts = tweet.getReposts();
-		List<Tweet> newList = new ArrayList<>();
-		for (Tweet repost : userReposts) {
-			if (!repost.isDeleted()) {
-				newList.add(repost);
-			}
-		}
-	
-		return tweetMapper.entitiesToDtos(newList);
-	}
+        List<Tweet> userReplies = tweet.getReplies();
+        List<Tweet> newList = new ArrayList<>();
+        for (Tweet reply : userReplies) {
+            if (!reply.isDeleted()) {
+                newList.add(reply);
+            }
+        }
 
-	// Retrieves the users mentioned in the tweet with the given id. 
-	// If that tweet is deleted or otherwise doesn’t exist, an error should be sent in lieu of a response.
-	// Deleted users should be excluded from the response.
-	// **IMPORTANT** Remember that tags and mentions must be parsed by the server!
-	@Override
-	public List<UserResponseDto> getMentions(Long id) {
-		Tweet tweet = tweetRepository.findByIdAndDeletedFalse(id);
-		if (tweet == null) {
-			throw new NotFoundException("No tweet was found with this id: " + id + ". Or this tweet has been deleted.");
-		}
-		
-		List<User> userList = new ArrayList<>();
-		for (User user : tweet.getUserMentioned()) {
-			if (!user.isDeleted()) {
-				userList.add(user);
-			}
-		}
-		
-		return userMapper.entityToResponseDto(userList);
-	}
+        return tweetMapper.entitiesToResponseDtos(newList);
+    }
+
+    // Retrieves the direct reposts of the tweet with the given id. If that tweet is
+    // deleted or otherwise doesn’t exist, an error should be sent in lieu of a
+    // response.
+    // Deleted reposts of the tweet should be excluded from the response.
+    @Override
+    public List<TweetResponseDto> getRepostsOfTweets(Long id) {
+        Tweet tweet = tweetRepository.findByIdAndDeletedFalse(id);
+        if (tweet == null) {
+            throw new NotFoundException("No tweet was found with this id: " + id + ". Or this tweet has been deleted.");
+        }
+
+        List<Tweet> userReposts = tweet.getReposts();
+        List<Tweet> newList = new ArrayList<>();
+        for (Tweet repost : userReposts) {
+            if (!repost.isDeleted()) {
+                newList.add(repost);
+            }
+        }
+
+        return tweetMapper.entitiesToResponseDtos(newList);
+    }
+
+    // Retrieves the users mentioned in the tweet with the given id.
+    // If that tweet is deleted or otherwise doesn’t exist, an error should be sent
+    // in lieu of a response.
+    // Deleted users should be excluded from the response.
+    // **IMPORTANT** Remember that tags and mentions must be parsed by the server!
+    @Override
+    public List<UserResponseDto> getMentions(Long id) {
+        Tweet tweet = tweetRepository.findByIdAndDeletedFalse(id);
+        if (tweet == null) {
+            throw new NotFoundException("No tweet was found with this id: " + id + ". Or this tweet has been deleted.");
+        }
+
+        List<User> userList = new ArrayList<>();
+        for (User user : tweet.getUserMentioned()) {
+            if (!user.isDeleted()) {
+                userList.add(user);
+            }
+        }
+
+        return userMapper.entityToResponseDto(userList);
+    }
 }

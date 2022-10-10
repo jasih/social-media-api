@@ -41,7 +41,6 @@ public class UserServiceImpl implements UserService {
 	private final ValidateService validateService;
 	private final ValidateServiceImpl validateServiceImpl;
 	private final TweetMapper tweetMapper;
-	private final TweetRepository tweetRepository;
 
 	private void validateUserRequest(UserRequestDto userRequestDto) {
 		if (userRequestDto.getCredentials() == null || userRequestDto.getCredentials().getUsername() == null
@@ -205,7 +204,7 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 
-		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToDtos(userTweets);
+		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToResponseDtos(userTweets);
 		return tweetResponses;
 	}
 
@@ -225,7 +224,7 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 
-		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToDtos(userMentions);
+		List<TweetResponseDto> tweetResponses = tweetMapper.entitiesToResponseDtos(userMentions);
 		return tweetResponses;
 	}
 

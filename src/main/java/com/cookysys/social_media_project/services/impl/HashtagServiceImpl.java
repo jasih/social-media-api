@@ -14,7 +14,6 @@ import com.cookysys.social_media_project.exceptions.NotFoundException;
 import com.cookysys.social_media_project.mappers.HashtagMapper;
 import com.cookysys.social_media_project.mappers.TweetMapper;
 import com.cookysys.social_media_project.repositories.HashtagRepository;
-//import com.cookysys.social_media_project.repositories.TweetRepository;
 import com.cookysys.social_media_project.services.HashtagService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,7 +26,6 @@ public class HashtagServiceImpl implements HashtagService {
 	private final HashtagMapper hashtagMapper;
 
 	private final TweetMapper tweetMapper;
-	private final TweetRepository tweetRepository;
 
 	private final ValidateServiceImpl validateServiceImpl;
 

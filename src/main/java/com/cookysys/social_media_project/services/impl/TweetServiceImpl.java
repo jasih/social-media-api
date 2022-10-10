@@ -75,7 +75,8 @@ public class TweetServiceImpl implements TweetService {
     public List<TweetResponseDto> getAllTweets() {
         List<Tweet> tweets = tweetRepository.findAll();
         List<TweetResponseDto> tweetsToGet = new ArrayList<>(
-                tweetMapper.entitiesToResponseDtos(tweetRepository.findAll(Sort.by(Sort.Direction.DESC))));
+                tweetMapper.entitiesToResponseDtos(
+                        tweetRepository.findAll(Sort.by(Sort.Direction.DESC))));
         for (Tweet tweet : tweets) {
             if (!tweet.isDeleted()) {
                 TweetResponseDto tweetToGet = tweetMapper.entityToResponseDto(tweet);
@@ -111,10 +112,7 @@ public class TweetServiceImpl implements TweetService {
         List<Tweet> tweets = user.getTweets();
         tweets.add(newTweet);
         user.setTweets(tweets);
-        user.setDeleted(false);
         userRepository.saveAndFlush(user);
-
-        // implement method that processes mentions and hashtags
 
         TweetResponseDto createdTweet = tweetMapper.entityToResponseDto(newTweet);
         UserResponseDto tweetCreator = createdTweet.getAuthor();
@@ -174,8 +172,6 @@ public class TweetServiceImpl implements TweetService {
         tweetReply.setInReplyTo(tweetToReplyTo);
         userRepository.saveAndFlush(replier);
 
-        // implement method that processes mentions and hashtags
-
         TweetResponseDto repliedTweet = tweetMapper.entityToResponseDto(tweetReply);
         UserResponseDto tweetReplier = repliedTweet.getAuthor();
         tweetReplier.setUsername(replier.getCredentials().getUsername());
@@ -224,8 +220,26 @@ public class TweetServiceImpl implements TweetService {
 
     @Override
     public ContextDto getContextOfTweet(Long id) {
-        // TODO Auto-generated method stubs
-        return null;
+        Tweet tweet = checkTweet(id);
+        ContextDto context = new ContextDto();
+
+        TweetResponseDto target = tweetMapper.entityToResponseDto(tweet);
+        UserResponseDto targetAuthor = target.getAuthor();
+        targetAuthor.setUsername(tweet.getAuthor().getCredentials().getUsername());
+        target.setAuthor(targetAuthor);
+        context.setTarget(target);
+
+        List<TweetResponseDto> befores = new ArrayList<>();
+        TweetResponseDto before = target.getInReplyTo();
+        UserResponseDto beforeAuthor = before.getAuthor();
+        beforeAuthor.setUsername(before.getAuthor().getUsername());
+        before.setAuthor(beforeAuthor);
+        befores.add(before);
+        context.setBefore(befores);
+
+        context.setAfter(getRepliesToTweets(target.getId()));
+
+        return context;
     }
 
     // Retrieves the direct replies to the tweet with the given id. If that tweet is

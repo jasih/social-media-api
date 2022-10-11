@@ -39,7 +39,6 @@ public class TweetServiceImpl implements TweetService {
     private final CredentialsMapper credentialsMapper;
     private final TweetRepository tweetRepository;
     private final UserRepository userRepository;
-    private final CredentialsDto credentialsDto;
 
     private Tweet checkTweet(Long id) {
         Optional<Tweet> optionalTweet = tweetRepository.findById(id);
@@ -56,18 +55,18 @@ public class TweetServiceImpl implements TweetService {
     }
 
     private User findUser(String username) {
-        List<User> users = userRepository.findAll();
-        for (User user : users) {
-            if (user == null) {
-                throw new NotFoundException("User not found.");
-            }
-            if (!user.getCredentials().getPassword().equals(credentialsDto.getPassword())) {
-                throw new NotAuthorizedException("Your do not have permission to repost this tweet.");
-            }
-            if (user.getCredentials().getUsername().equals(username)) {
-                return user;
-            }
-        }
+//        List<User> users = userRepository.findAll();
+//        for (User user : users) {
+//            if (user == null) {
+//                throw new NotFoundException("User not found.");
+//            }
+//            if (!user.getCredentials().getPassword().equals()) {
+//                throw new NotAuthorizedException("Your do not have permission to repost this tweet.");
+//            }
+//            if (user.getCredentials().getUsername().equals(username)) {
+//                return user;
+//            }
+//        }
         return null;
     }
 
@@ -103,7 +102,7 @@ public class TweetServiceImpl implements TweetService {
     public TweetResponseDto createTweet(TweetRequestDto tweetRequestDto) {
         validateTweet(tweetRequestDto);
         Tweet newTweet = tweetMapper.requestDtoToEntity(tweetRequestDto);
-        CredentialsEmbeddable credentials = credentialsMapper.requestDtoToEntity(tweetRequestDto.getCredentials());
+        CredentialsEmbeddable credentials = credentialsMapper.requestToEntity(tweetRequestDto.getCredentials());
 
         User user = findUser(credentials.getUsername());
         newTweet.setAuthor(user);
@@ -160,7 +159,7 @@ public class TweetServiceImpl implements TweetService {
         validateTweet(tweetRequestDto);
         Tweet tweetToReplyTo = checkTweet(id);
         Tweet tweetReply = tweetMapper.requestDtoToEntity(tweetRequestDto);
-        CredentialsEmbeddable credentials = credentialsMapper.requestDtoToEntity((tweetRequestDto.getCredentials()));
+        CredentialsEmbeddable credentials = credentialsMapper.requestToEntity((tweetRequestDto.getCredentials()));
 
         User replier = findUser(credentials.getUsername());
         tweetReply.setAuthor(replier);
